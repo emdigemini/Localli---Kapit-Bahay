@@ -47,7 +47,7 @@ function SideSection(){
         </ul>
       </section>
 
-      <section className="adjust-preferences">
+      <section className="tutor-preferences">
         <h2>Adjust Tutoring Preferences</h2>
         <div className="your-preferences">
           <div className="input-group-1">

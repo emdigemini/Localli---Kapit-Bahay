@@ -15,16 +15,15 @@
   color: var(--secondary-black);
 }
 
-.adjust-preferences {
+.tutor-preferences {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.input-box {
+.tutor-preferences .input-box {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 /* Custom Dropdown - Adjust Preferences*/

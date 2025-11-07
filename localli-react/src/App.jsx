@@ -16,8 +16,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/login-page' element={<LoginPage />} />
-        <Route index element={<ForYouPage />} />
+        <Route index element={<LoginPage />} />
+        <Route path='/login-page' element={<ForYouPage />} />
       </Routes>
     </>
   )
