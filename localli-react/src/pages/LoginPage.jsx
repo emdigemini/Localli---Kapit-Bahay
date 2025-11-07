@@ -1,7 +1,7 @@
 import '../styles/loginpage.css'
 import '../styles/animation.css'
 import AOS from "aos";
-import { useState, useEffect } from 'react'
+import { useState, useEffect, } from 'react'
 
 export function LoginPage(){
   const [switched, setSwitched] = useState(false);
@@ -80,6 +80,9 @@ function OrangeBox_Tutors(){
 }
 
 function LoginHeader_Students(){
+  const [value1, setValue1] = useState("");
+  const [value2, setValue2] = useState("");
+
   return (
     <>
       <div className="login-box__header"
@@ -95,12 +98,12 @@ function LoginHeader_Students(){
         data-aos-duration="400"
         >
         <div className="input-group">
-          <input id="email_username" type="text" placeholder=' ' required />
-          <label htmlFor="email_username">Email or username</label>
+          <input onChange={(e) => setValue1(e.target.value)} id="email_username" type="text" placeholder=' ' required />
+          <label className={`${value1.length > 0 ? 'up' : ''}`} htmlFor="email_username">Email or username</label>
         </div>
         <div className="input-group">
-          <input id="password" type="text" placeholder=' ' required />
-          <label htmlFor="password">Password</label>
+          <input onChange={(e) => setValue2(e.target.value)} id="password" type="password" placeholder=' ' required />
+          <label className={`${value2.length > 0 ? 'up' : ''}`} htmlFor="password">Password</label>
         </div>
         <div className="auth-links">
           <a href='#'>Forgot password?</a>
@@ -118,6 +121,9 @@ function LoginHeader_Students(){
 }
 
 function LoginHeader_Tutors(){
+  const [value1, setValue1] = useState("");
+  const [value2, setValue2] = useState("");
+
   return (
     <>
       <div className="login-box__header"
@@ -133,12 +139,12 @@ function LoginHeader_Tutors(){
         data-aos-duration="400"
         >
         <div className="input-group">
-          <input id="email_username" type="text" placeholder=' ' required />
-          <label htmlFor="email_username">Email or username</label>
+          <input onChange={(e) => setValue1(e.target.value)} id="email_username" type="text" placeholder=' ' required />
+          <label className={`${value1.length > 0 ? 'up' : ''}`} htmlFor="email_username">Email or username</label>
         </div>
         <div className="input-group">
-          <input id="password" type="text" placeholder=' ' required />
-          <label htmlFor="password">Password</label>
+          <input onChange={(e) => setValue2(e.target.value)} id="password" type="password" placeholder=' ' required />
+          <label className={`${value2.length > 0 ? 'up' : ''}`} htmlFor="password">Password</label>
         </div>
         <div className="auth-links">
           <a href='#'>Forgot password?</a>
