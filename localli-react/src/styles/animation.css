@@ -1,0 +1,64 @@
+.orange-box.switch .orange-box_img {
+  height: 500px;
+}
+
+.orange-box.switch {
+  animation: switchPage .5s  ease-in-out forwards;
+}
+
+.orange-box.unswitch {
+  animation: unSwitchPage .5s  ease-in-out forwards;
+}
+
+@keyframes switchPage {
+  0% {
+    position: absolute;
+    top: 0;
+    left: 0;
+  } 100% {
+    position: absolute;
+    top: 0;
+    left: 50vw;
+  }
+}
+
+@keyframes unSwitchPage {
+  0% {
+    position: absolute;
+    top: 0;
+    left: 50vw;
+  } 100% {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.login-box.switch {
+  margin: 0 10rem 0 0;
+  animation: switchPage00 .5s  ease-in-out forwards;
+}
+
+.login-box.unswitch {
+  animation: unSwitchPage00 .5s  ease-in-out forwards;
+}
+
+@keyframes switchPage00 {
+  0% {
+    position: absolute;
+    right: 0;
+  } 100% {
+    position: absolute;
+    right: 50vw;
+  }
+}
+
+@keyframes unSwitchPage00 {
+  0% {
+    position: absolute;
+    right: 50vw;
+  } 100% {
+    position: absolute;
+    right: 0;
+  }
+}
