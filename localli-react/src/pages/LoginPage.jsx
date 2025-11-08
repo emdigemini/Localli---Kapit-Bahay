@@ -1,15 +1,15 @@
-import '../styles/loginpage.css'
-import '../styles/animation.css'
 import AOS from "aos";
-import { useState, useEffect, } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export function LoginPage(){
   const [switched, setSwitched] = useState(false);
   const [wasSwitched, setWasSwitched] = useState(false);
+  const orangeBox = useRef({});
 
   function switchPage(){
     setWasSwitched(switched);
     setSwitched(!switched);
+    console.log(orangeBox.current.className);
   }
 
   useEffect(() => {

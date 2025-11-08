@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import './App.css'
 import "aos/dist/aos.css";
 import AOS from 'aos'
 import { LoginPage } from "./pages/LoginPage"
@@ -16,8 +15,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route index element={<LoginPage />} />
-        <Route path='/login-page' element={<ForYouPage />} />
+        <Route path='/login-page' element={<LoginPage />} />
+        <Route index element={<ForYouPage />} />
       </Routes>
     </>
   )
