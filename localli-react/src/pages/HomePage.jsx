@@ -7,9 +7,11 @@ export function HomePage(){
   return (
     <div className="fyp-page">
       <div className="left-side">
-        <div className="left-side-cards">
-          <ProfileCard />
-          <SideFooter />
+        <div className="left-sticky-wrapper">
+          <div className="left-side-cards">
+            <ProfileCard />
+            <SideFooter />
+          </div>
         </div>
         <PostFeed />
       </div>

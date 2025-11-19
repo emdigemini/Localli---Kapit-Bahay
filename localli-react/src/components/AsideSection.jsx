@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 export function AsideSection(){
   return (
@@ -117,13 +117,15 @@ function AdjustUserPreferences(){
 }
 
 function Dropdown({ label, options }) {
+  const [ onDropdown, setOnDropdown ] = useState(false);  
   const dropdown = useRef(null);
   const selectedBox = useRef(null);
+  const subjectsRef = useRef(null);
 
   useEffect(() => {
     const handleBodyClick = (e) => {
       if (dropdown.current && !dropdown.current.contains(e.target)) {
-        dropdown.current.classList.remove('active');
+        setOnDropdown(false);
       }
     };
     document.body.addEventListener('click', handleBodyClick);
@@ -131,13 +133,14 @@ function Dropdown({ label, options }) {
   }, []);
 
   const toggleDropdown = () => {
-    dropdown.current.classList.toggle('active');
+    setOnDropdown(!onDropdown);
   };
 
   const selectValue = (e) => {
     const value = e.target.textContent;
     selectedBox.current.textContent = value;
-    dropdown.current.classList.remove('active');
+    setOnDropdown(false);
+    return;
   };
 
   const isCategory = Array.isArray(options) && typeof options[0] === "object";
@@ -146,7 +149,7 @@ function Dropdown({ label, options }) {
     <div className="input-box">
       <label>{label}</label>
 
-      <div ref={dropdown} onClick={toggleDropdown} className="custom-select">
+      <div ref={dropdown} onClick={toggleDropdown} className={`custom-select ${onDropdown ? " active" : ""}`}>
         <div ref={selectedBox} className="select-box">
           Select {label}
         </div>
@@ -160,7 +163,7 @@ function Dropdown({ label, options }) {
                 <p>{cat.name}</p>
                 <div className="subjects">
                   {cat.subject.map((subj, j) => (
-                    <div className="subject" key={j}>{subj}</div>
+                    <div ref={subjectsRef} className="subject" key={j}>{subj}</div>
                   ))}
                 </div>
               </div>
