@@ -35,5 +35,7 @@ body {
   overflow-y: scroll;
   #root {
     height: 100%;
+    width: 100%;
+    min-width: 100vw;
   }
 }
