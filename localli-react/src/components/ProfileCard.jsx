@@ -1,0 +1,27 @@
+export function ProfileCard(){
+  return (
+    <div className="profile-card">
+      <div className="profile-pic">
+
+      </div>
+      <div className="profile_user-name">
+        User Name
+      </div>
+      <div className="profile_job-title">
+        Data engineer at Socia PH
+      </div>
+      <div className="profile_location">
+        <p>Pililla, Calabarzon</p>
+      </div>
+      <div className="profile_availability">
+        <p>Availability: 6AM - 12NN</p>
+      </div>
+      <div className="profile_job-details">
+        <p>Data Engineer</p>
+        <p>Online</p>
+        <p>Tutor</p>
+        <p>Part-time</p>
+      </div>
+    </div>
+  )
+}

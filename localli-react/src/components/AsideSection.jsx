@@ -13,7 +13,7 @@ function SuggestUser(){
 
   return (
     <section className="suggestions">
-      <h2>Learners Who Need You</h2>
+      <h3>Learners Who Need You</h3>
       <ul>
         <li>
           <span className="small-profile"></span>
@@ -62,10 +62,10 @@ function AdjustUserPreferences(){
 
   return (
     <section className="tutor-preferences">
-      <h2>Adjust Tutoring Preferences</h2>
+      <h3>Adjust Tutoring Preferences</h3>
       <div className="your-preferences">
         <div className="input-group-1">
-          <Dropdown label="What I Can Teach" 
+          <Dropdown label="Subject to Teach" 
             options={options.subjects}
           />
           <Dropdown label="Preferred Levels" 
@@ -154,7 +154,7 @@ function Dropdown({ label, options }) {
         <div className="subjects_dropdown" onClick={selectValue}>
           
           {isCategory ? (
-            // ✅ CATEGORY TYPE (subjects)
+            // CATEGORY TYPE (subjects)
             options.map((cat, i) => (
               <div className="category" key={i}>
                 <p>{cat.name}</p>
@@ -166,7 +166,7 @@ function Dropdown({ label, options }) {
               </div>
             ))
           ) : (
-            // ✅ SIMPLE LIST TYPE (levels, mode)
+            // SIMPLE LIST TYPE (levels, mode)
             options.map((item, i) => (
               <div className="subject" key={i}>{item}</div>
             ))

@@ -105,6 +105,23 @@
         position: relative;
         margin: 20px 0 0;
 
+        .toggle-pass {
+          position: absolute;
+          top: 8px;
+          right: 10px;
+          border-radius: 50%;
+          padding: 4px 6px;
+          cursor: pointer;
+          transition: .2s ease;
+          &:hover {
+            background: #e6e6e6;
+          }
+          i {
+            font-size: 16px;
+            color: #666;
+          }
+        }
+
         input {
           width: 100%;
           padding: 12px;

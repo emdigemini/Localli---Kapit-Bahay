@@ -81,7 +81,12 @@ function OrangeBox_Tutors(){
 
 function LoginHeader_Students(){
   const [value1, setValue1] = useState("");
-  const [value2, setValue2] = useState("");
+  const [password, setPassword] = useState("");
+  const [ showPassword, setShowPassword ] = useState(false);
+
+  const showPass = () => {
+    setShowPassword(!showPassword);
+  }
 
   return (
     <>
@@ -102,8 +107,15 @@ function LoginHeader_Students(){
           <label className={`${value1.length > 0 ? 'up' : ''}`} htmlFor="email_username">Email or username</label>
         </div>
         <div className="input-group">
-          <input onChange={(e) => setValue2(e.target.value)} id="password" type="password" placeholder=' ' required />
-          <label className={`${value2.length > 0 ? 'up' : ''}`} htmlFor="password">Password</label>
+          <input onChange={(e) => setPassword(e.target.value)} id="password" type={showPassword ? 'text' : 'password'} placeholder=' ' required />
+          <label className={`${password.length > 0 ? 'up' : ''}`} htmlFor="password">Password</label>
+          {password.length > 0 && (
+            <>
+              <div onClick={showPass} className="toggle-pass">
+                <i className={`${showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'}`}></i>
+              </div>
+            </>
+          )}
         </div>
         <div className="auth-links">
           <a href='#'>Forgot password?</a>
@@ -122,7 +134,12 @@ function LoginHeader_Students(){
 
 function LoginHeader_Tutors(){
   const [value1, setValue1] = useState("");
-  const [value2, setValue2] = useState("");
+  const [password, setPassword] = useState("");
+  const [ showPassword, setShowPassword ] = useState(false);
+
+  const showPass = () => {
+    setShowPassword(!showPassword);
+  }
 
   return (
     <>
@@ -143,8 +160,15 @@ function LoginHeader_Tutors(){
           <label className={`${value1.length > 0 ? 'up' : ''}`} htmlFor="email_username">Email or username</label>
         </div>
         <div className="input-group">
-          <input onChange={(e) => setValue2(e.target.value)} id="password" type="password" placeholder=' ' required />
-          <label className={`${value2.length > 0 ? 'up' : ''}`} htmlFor="password">Password</label>
+          <input onChange={(e) => setPassword(e.target.value)} id="password" type={showPassword ? 'text' : 'password'} placeholder=' ' required />
+          <label className={`${password.length > 0 ? 'up' : ''}`} htmlFor="password">Password</label>
+          {password.length > 0 && (
+            <>
+              <div onClick={showPass} className="toggle-pass">
+                <i className={`${showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'}`}></i>
+              </div>
+            </>
+          )}
         </div>
         <div className="auth-links">
           <a href='#'>Forgot password?</a>

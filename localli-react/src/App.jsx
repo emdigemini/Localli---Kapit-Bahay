@@ -1,9 +1,11 @@
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import "aos/dist/aos.css"
+import AOS from 'aos'
 import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import "aos/dist/aos.css";
-import AOS from 'aos'
+import { Header } from './components/Header'
 import { LoginPage } from "./pages/LoginPage"
-import { ForYouPage } from './pages/ForYouPage';
+import { HomePage } from './pages/HomePage'
 
 function App() {
   useEffect(() => {
@@ -14,9 +16,10 @@ function App() {
     }, [])
   return (
     <>
+      <Header />
       <Routes>
         <Route path='/login-page' element={<LoginPage />} />
-        <Route index element={<ForYouPage />} />
+        <Route index element={<HomePage />} />
       </Routes>
     </>
   )
