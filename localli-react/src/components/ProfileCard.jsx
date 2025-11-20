@@ -11,9 +11,11 @@ export function ProfileCard(){
         Data engineer at Socia PH
       </div>
       <div className="profile_location">
+        <i className="bi bi-geo-alt"></i>
         <p>Pililla, Calabarzon</p>
       </div>
       <div className="profile_availability">
+        <i className="bi bi-clock"></i>
         <p>Availability: 6AM - 12NN</p>
       </div>
       <div className="profile_job-details">

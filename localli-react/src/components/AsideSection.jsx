@@ -138,8 +138,10 @@ function Dropdown({ label, options }) {
 
   const selectValue = (e) => {
     const value = e.target.textContent;
+    if(value === 'Academic' || value === 'Skills'
+      || value === 'Other'
+     ) return;  
     selectedBox.current.textContent = value;
-    setOnDropdown(false);
     return;
   };
 

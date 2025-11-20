@@ -30,6 +30,8 @@
   }
 
   .profile_location, .profile_availability {
+    display: flex;
+    gap: 4px;
     font-size: 12px;
   }
 
