@@ -1,4 +1,17 @@
-export function SideFooter(){
+import { ProfileCard } from "./ProfileCard"
+
+export function SideCards(){
+  return (
+    <div className="left-sticky-wrapper">
+      <div className="left-side-cards">
+        <ProfileCard />
+        <SideFooter />
+      </div>
+    </div>
+  )
+}
+
+function SideFooter(){
   return (
     <div className="side-footer">
       <div className="adsense">
