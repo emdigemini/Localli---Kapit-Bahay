@@ -1,5 +1,6 @@
 import { NotificationList } from "./NotificationList"
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router";
 
 export function Navigation(){
   const [ toggleHome, setToggleHome ] = useState(false);
@@ -9,43 +10,31 @@ export function Navigation(){
   const [ toggleBookmark, setToggleBookmark ] = useState(false);
   const home = useRef(null);
   const notifRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const path = location.pathname;
+    setToggleHome(path === "/");
+    setToggleMessage(path === "/messages");
+  }, [location])
 
   const toggleEvent = (e) => {
     const toggleTo = e.currentTarget.id;
     switch (toggleTo) {
-      case 'community':{
-        setToggleCommunity(!toggleCommunity);
-        break;
-      }
-      case 'message':{
-        setToggleMessage(!toggleMessage);
-        break;
-      }
-      case 'notification':{
-        setToggleNotif(!toggleNotif);
-        break;
-      }
-      case 'bookmark':{
-        setToggleBookmark(!toggleBookmark);
-        break;
-      }
-      default:{
-        setToggleHome(!toggleHome);
-        break;
-      }
+      case 'community': { setToggleCommunity(!toggleCommunity); break; }
+      case 'message':{ navigate("/messages"); break; }
+      case 'notification': { setToggleNotif(!toggleNotif); break; }
+      case 'bookmark': { setToggleBookmark(!toggleBookmark); break; }
+      default: { navigate("/"); break; }
     }
   }
-
-  // useEffect(() => {
-  //   if(toggleNotif){
-
-  //   }
-  // }, [toggleNotif])
 
   return (
     <>
       <ul className="navigation-bar">
-        <li id="home" ref={home} className="active"
+        <li id="home" ref={home}
+          style={toggleHome ? { color: "#4993fb" } : {}}
           onClick={(e) => toggleEvent(e)}
         ><Home /></li>
         <li id="community"
@@ -53,6 +42,7 @@ export function Navigation(){
         ><Community /></li>
         <li id="message"
           onClick={(e) => toggleEvent(e)}
+          style={toggleMessage ? { color: "#4993fb" } : {}}
         ><Message /></li>
         <li id="notification"
           ref={notifRef}

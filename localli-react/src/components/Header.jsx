@@ -1,7 +1,9 @@
+import { Outlet } from "react-router-dom";
 import { Navigation } from "./Navigation"
 
 export function Header(){
   return (
+    <>
     <header>
       <div className="side1">
         <Logo />
@@ -12,6 +14,8 @@ export function Header(){
         <ContactSupport />
       </div>
     </header>
+    <Outlet />
+    </>
   )
 }
 

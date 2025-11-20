@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Header } from './components/Header'
 import { LoginPage } from "./pages/LoginPage"
 import { HomePage } from './pages/HomePage'
+import { MessagePage } from './pages/MessagePage'
 
 function App() {
   useEffect(() => {
@@ -16,10 +17,12 @@ function App() {
     }, [])
   return (
     <>
-      <Header />
       <Routes>
-        <Route path='/login-page' element={<LoginPage />} />
-        <Route index element={<HomePage />} />
+        <Route path="/login-page" element={<LoginPage />} />
+        <Route path='/' element={<Header />}>
+          <Route index element={<HomePage />} />
+          <Route path="messages" element={<MessagePage />} />
+        </Route>
       </Routes>
     </>
   )
