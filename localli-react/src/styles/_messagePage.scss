@@ -53,6 +53,10 @@
           border-bottom: 1px solid #eee;
           cursor: pointer;
 
+          &:hover {
+            background: #E3EEFD;
+          }
+
           .avatar {
             width: 45px;
             height: 45px;
@@ -202,4 +206,12 @@
     }
   }
 
+}
+
+@media screen and (max-width: 1484px) {
+  .left-side {
+    .left-side-cards {
+      display: none;
+    }
+  }
 }

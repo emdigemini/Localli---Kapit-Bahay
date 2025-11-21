@@ -25,8 +25,8 @@ function PostCard(){
         <div className="post-card_interaction">
           <LikeButton />
           <CommentButton />
-          <ShareButton />
           <BookmarkButton />
+          <ShareButton />
         </div>
       </div>
         <div className="post-card">
@@ -44,8 +44,24 @@ function PostCard(){
         <div className="post-card_interaction">
           <LikeButton />
           <CommentButton />
-          <ShareButton />
           <BookmarkButton />
+          <ShareButton />
+        </div>
+      </div>
+      <div className="post-card">
+        <div className="post-header">
+          <div className="user-profile">
+
+          </div>
+          <div className="post-text">
+            Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
+          </div>
+        </div>
+        <div className="post-card_interaction">
+          <LikeButton />
+          <CommentButton />
+          <BookmarkButton />
+          <ShareButton />
         </div>
       </div>
       <div className="post-card">
@@ -63,8 +79,8 @@ function PostCard(){
         <div className="post-card_interaction">
           <LikeButton />
           <CommentButton />
-          <ShareButton />
           <BookmarkButton />
+          <ShareButton />
         </div>
       </div>
     </>

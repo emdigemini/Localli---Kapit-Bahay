@@ -120,11 +120,10 @@ function Dropdown({ label, options }) {
   const [ onDropdown, setOnDropdown ] = useState(false);  
   const dropdown = useRef(null);
   const selectedBox = useRef(null);
-  const subjectsRef = useRef(null);
 
   useEffect(() => {
     const handleBodyClick = (e) => {
-      if (dropdown.current && !dropdown.current.contains(e.target)) {
+      if (dropdown.current && !dropdown.current.contains(e.target)){
         setOnDropdown(false);
       }
     };
@@ -165,7 +164,7 @@ function Dropdown({ label, options }) {
                 <p>{cat.name}</p>
                 <div className="subjects">
                   {cat.subject.map((subj, j) => (
-                    <div ref={subjectsRef} className="subject" key={j}>{subj}</div>
+                    <div className="subject" key={j}>{subj}</div>
                   ))}
                 </div>
               </div>
