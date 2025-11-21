@@ -15,18 +15,20 @@ export function Navigation(){
 
   useEffect(() => {
     const path = location.pathname;
-    setToggleHome(path === "/");
+    setToggleHome(path === "/home");
+    setToggleCommunity(path === "/community");
     setToggleMessage(path === "/messages");
   }, [location])
 
   const toggleEvent = (e) => {
     const toggleTo = e.currentTarget.id;
     switch (toggleTo) {
-      case 'community': { setToggleCommunity(!toggleCommunity); break; }
+      case 'community': { navigate("/community"); break; }
       case 'message':{ navigate("/messages"); break; }
       case 'notification': { setToggleNotif(!toggleNotif); break; }
       case 'bookmark': { setToggleBookmark(!toggleBookmark); break; }
-      default: { navigate("/"); break; }
+      case 'logout': { navigate("/"); break; }
+      default: { navigate("/home"); break; }
     }
   }
 
@@ -39,6 +41,7 @@ export function Navigation(){
         ><Home /></li>
         <li id="community"
           onClick={(e) => toggleEvent(e)}
+          style={toggleCommunity ? { color: "#4993fb" } : {}}
         ><Community /></li>
         <li id="message"
           onClick={(e) => toggleEvent(e)}

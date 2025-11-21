@@ -1,6 +1,7 @@
 @import url('./_header.scss');
 @import url('./_loginPage.scss');
 @import url('./_messagePage.scss');
+@import url('./_communityPage.scss');
 @import url('./_fyp.scss');
 @import url('./_profileCard.scss');
 @import url('./_sideFooter.scss');
@@ -33,10 +34,10 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  overflow-y: auto;
   #root {
-    height: auto;
+    height: 100vh;
     width: 100%;
     min-width: 100%;
+    overflow-y: auto;
   }
 }

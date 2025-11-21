@@ -1,3 +1,5 @@
+@import url("_createPost.scss");
+
 .fyp-page {
   display: grid;
   grid-template-columns: 60% 40%;
@@ -25,6 +27,7 @@
     .main-feed {
       display: flex;
       align-items: center;
+      height: 100%;
       width: 100%;
       flex-direction: column;
       gap: 1.8rem;
@@ -145,7 +148,7 @@
   .sidebar {
     position: fixed;
     top: 92px;
-    right: 0;
+    right: 15px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -356,7 +359,7 @@
 
 /* MEDIA QUERIES ------------------------------------------------ */
 
-@media screen and (max-width: 1484px) {
+@media screen and (max-width: 1553px) {
   .fyp-page {
     .left-side {
       .left-side-cards {
@@ -366,7 +369,7 @@
   }
 }
 
-@media screen and (max-width: 984px) {
+@media screen and (max-width: 1323px) {
   .fyp-page {
     display: flex;
     justify-content: center;

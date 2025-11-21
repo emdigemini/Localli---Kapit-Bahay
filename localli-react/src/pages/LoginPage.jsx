@@ -1,10 +1,12 @@
 import AOS from "aos";
+import { useNavigate } from "react-router";
 import { useState, useEffect, useRef } from 'react'
 
 export function LoginPage(){
   const [switched, setSwitched] = useState(false);
   const [wasSwitched, setWasSwitched] = useState(false);
   const orangeBox = useRef({});
+  const navigate = useNavigate();
 
   function switchPage(){
     setWasSwitched(switched);
@@ -34,8 +36,8 @@ export function LoginPage(){
           : wasSwitched ? 'unswitch' : ''}`
           }>
           {switched 
-          ? <LoginHeader_Students />
-          : <LoginHeader_Tutors />
+          ? <LoginHeader_Students navigate={navigate} />
+          : <LoginHeader_Tutors navigate={navigate} />
           }
         </div>
       </div>
@@ -79,7 +81,7 @@ function OrangeBox_Tutors(){
   )
 }
 
-function LoginHeader_Students(){
+function LoginHeader_Students({ navigate }){
   const [value1, setValue1] = useState("");
   const [password, setPassword] = useState("");
   const [ showPassword, setShowPassword ] = useState(false);
@@ -122,7 +124,9 @@ function LoginHeader_Students(){
           <a href='#'>Don't have an account?</a>
         </div>
         <div className="btn-group">
-          <button className='login-btn'>LOGIN</button>
+          <button className='login-btn' 
+            onClick={() => navigate("home")}
+          >LOGIN</button>
           <button className='signup-btn'>CREATE ACCOUNT</button>
         </div>
       </div>
@@ -132,7 +136,7 @@ function LoginHeader_Students(){
   )
 }
 
-function LoginHeader_Tutors(){
+function LoginHeader_Tutors({ navigate }){
   const [value1, setValue1] = useState("");
   const [password, setPassword] = useState("");
   const [ showPassword, setShowPassword ] = useState(false);
@@ -175,7 +179,9 @@ function LoginHeader_Tutors(){
           <a href='#'>Don't have an account?</a>
         </div>
         <div className="btn-group">
-          <button className='login-btn'>LOGIN</button>
+          <button className='login-btn'
+            onClick={() => navigate("home")}
+          >LOGIN</button>
           <button className='signup-btn'>CREATE ACCOUNT</button>
         </div>
       </div>

@@ -48,9 +48,13 @@ $anim-ease: ease-in-out;
 @keyframes switchPage00 {
   0% {
     position: absolute;
+    top: 50%;
+    transform: translate(0%, -45%);
     right: 0;
   } 100% {
     position: absolute;
+    top: 50%;
+    transform: translate(0, -45%);
     right: 50vw;
   }
 }
@@ -58,9 +62,13 @@ $anim-ease: ease-in-out;
 @keyframes unSwitchPage00 {
   0% {
     position: absolute;
+    top: 50%;
+    transform: translate(0, -45%);
     right: 50vw;
   } 100% {
     position: absolute;
+    top: 50%;
+    transform: translate(0%, -45%);
     right: 0;
   }
 }

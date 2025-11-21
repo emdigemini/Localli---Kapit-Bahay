@@ -19,7 +19,12 @@ export function MessagePage(){
 
         <div className="sidebar">
           <div className="tabs">
-            <div className="tab">All</div>
+            <div className="tab"
+              style={{ 
+                background: "#4993fb",
+                color: "#FFF"
+               }}
+            >All</div>
             <div className="tab">Unread</div>
             <div className="tab">Groups</div>
             <div className="tab">Spam</div>

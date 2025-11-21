@@ -1,7 +1,12 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom"
 import { Navigation } from "./Navigation"
+import { CreatePost } from "../utils/CreatePost"
+import { useContext } from "react"
+import { CreatePostUtility } from "./PostFeed"
 
 export function Header(){
+  const { createPost } = useContext(CreatePost);
+
   return (
     <>
     <header>
@@ -13,6 +18,7 @@ export function Header(){
         <Navigation />
         <ContactSupport />
       </div>
+      {createPost && <CreatePostUtility />}
     </header>
     <Outlet />
     </>
