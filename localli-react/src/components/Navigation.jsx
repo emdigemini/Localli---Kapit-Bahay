@@ -2,7 +2,7 @@ import { NotificationList } from "./NotificationList"
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 
-export function Navigation(){
+export function Navigation({ setConfirmLogout }){
   const [ toggleHome, setToggleHome ] = useState(false);
   const [ toggleCommunity, setToggleCommunity ] = useState(false);
   const [ toggleMessage, setToggleMessage ] = useState(false);
@@ -27,7 +27,7 @@ export function Navigation(){
       case 'message':{ navigate("/messages"); break; }
       case 'notification': { setToggleNotif(!toggleNotif); break; }
       case 'bookmark': { setToggleBookmark(!toggleBookmark); break; }
-      case 'logout': { navigate("/"); break; }
+      case 'logout': { setConfirmLogout(true); break; }
       default: { navigate("/home"); break; }
     }
   }
@@ -61,6 +61,30 @@ export function Navigation(){
       </ul>
       {toggleNotif && <NotificationList notifRef={notifRef}
       setToggleNotif={setToggleNotif} />}
+    </>
+  )
+}
+
+export function LogoutConfirmation({ setConfirmLogout }){
+  const navigate = useNavigate();
+  const logoutConfirm = useRef(null);
+
+  const confirmBoxHandler = (e) => {
+    if(!logoutConfirm.current.contains(e.target)){
+      setConfirmLogout(false);
+    } else return;
+  }
+
+  return (
+    <>
+      <div onClick={confirmBoxHandler} className="logout-confirm-box">
+        <div ref={logoutConfirm} className="logout-confirm">
+          <i onClick={() => setConfirmLogout(false)}
+           className="bi bi-x"></i>
+          <p>Are you sure you want to log out?</p>
+          <button onClick={() => navigate("/")}>Confirm</button>
+        </div>
+      </div>
     </>
   )
 }

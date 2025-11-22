@@ -1,11 +1,13 @@
 import { Outlet } from "react-router-dom"
 import { Navigation } from "./Navigation"
 import { CreatePost } from "../utils/CreatePost"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { CreatePostUtility } from "./PostFeed"
+import { LogoutConfirmation } from "./Navigation"
 
 export function Header(){
   const { createPost } = useContext(CreatePost);
+  const [ confirmLogout, setConfirmLogout ] = useState(false);
 
   return (
     <>
@@ -15,10 +17,11 @@ export function Header(){
         <SearchBar />
       </div>
       <div className="side2">
-        <Navigation />
+        <Navigation setConfirmLogout={setConfirmLogout} />
         <ContactSupport />
       </div>
       {createPost && <CreatePostUtility />}
+      {confirmLogout && <LogoutConfirmation setConfirmLogout={setConfirmLogout} />}
     </header>
     <Outlet />
     </>
