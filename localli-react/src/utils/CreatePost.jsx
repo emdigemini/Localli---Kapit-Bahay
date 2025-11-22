@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 export const CreatePost = createContext();
 
-export function CreatePostProvider({children}){
+export function CreatePostProvider({ children }){
   const [ createPost, setCreatePost ] = useState(false);
 
   const toggleCreatePost = (value) => {
@@ -18,7 +18,7 @@ export function CreatePostProvider({children}){
 
 export const PostRender = createContext();
 
-export function PostProvider({children}){
+export function PostProvider({ children }){
   const [ postValue, setPostValue ] = useState([]);
 
   const addPostValue = (value) => {
@@ -31,3 +31,15 @@ export function PostProvider({children}){
     </PostRender.Provider>
   )
 } 
+
+export const SelectedMedia = createContext();
+
+export function PrevMediaProvider({ children }){
+  const [ prevMedia, setPrevMedia ] = useState([]);
+
+  return (
+    <SelectedMedia.Provider value={{prevMedia, setPrevMedia}}>
+      {children}
+    </SelectedMedia.Provider>
+  )
+}
