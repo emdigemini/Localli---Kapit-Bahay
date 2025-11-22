@@ -15,3 +15,19 @@ export function CreatePostProvider({children}){
     </CreatePost.Provider>
   )
 }
+
+export const PostRender = createContext();
+
+export function PostProvider({children}){
+  const [ postValue, setPostValue ] = useState([]);
+
+  const addPostValue = (value) => {
+    setPostValue(prev => [...prev, value]);
+  }
+
+  return (
+    <PostRender.Provider value={{ postValue, addPostValue }}>
+      {children}
+    </PostRender.Provider>
+  )
+} 

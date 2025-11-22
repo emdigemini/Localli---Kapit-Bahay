@@ -1,5 +1,8 @@
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { CreatePost } from "../utils/CreatePost";
+import { PostRender } from "../utils/CreatePost";
+import DOMPurify from "dompurify";
+import parser from "html-react-parser";
 
 export function PostFeed(){
   return (
@@ -13,10 +16,40 @@ export function PostFeed(){
 }
 
 export function CreatePostUtility(){
+  const { toggleCreatePost } = useContext(CreatePost);
+  const { addPostValue } = useContext(PostRender);
+  const [ postText, setPostText ] = useState("");
+  const createPostRef = useRef(null);
+
+  const postBoxHandler = (e) => {
+    if(!createPostRef.current.contains(e.target)){
+      toggleCreatePost(false);
+    } else return;
+  }
+
+  const inputPostText = (e) => {
+    const text = e.target.innerHTML
+    .replaceAll('<div>', '<br>')
+    .replaceAll('</div>', '');
+    setPostText(text);
+  }
+
+  const uploadPost = () => {
+    const id = crypto.randomUUID();
+    const value = {
+      id, text: postText, media: ""
+    }
+    addPostValue(value);
+    setPostText("");
+    toggleCreatePost(false);
+  }
+
   return (
-    <div className="create-post-box">
-      <div className="create-post">
+    <div onClick={postBoxHandler} className="create-post-box">
+      <div ref={createPostRef} className="create-post">
         <div className="header">
+          <i onClick={() => toggleCreatePost(false)}
+           className="bi bi-x"></i>
           <div className="profile"></div>
           <div className="profile-button">
             <p>User Name</p>
@@ -24,7 +57,14 @@ export function CreatePostUtility(){
           </div>
         </div>
 
-        <div contentEditable className="post-text-box">
+        <div contentEditable 
+          onInput={inputPostText}
+          aria-multiline="true"
+          role="textbox" 
+          className={`post-text-box 
+          ${postText === "" 
+          ? "inactive" : ""}`}
+        >
         </div>
 
         <div className="post-tools">
@@ -32,23 +72,61 @@ export function CreatePostUtility(){
           <TagUser />
         </div>
 
-        <button className="post-button">POST</button>
+        <button onClick={uploadPost}
+         className="post-button"
+        >POST</button>
       </div>
     </div>
   )
 }
 
 function PostCard(){
+  const { postValue } = useContext(PostRender);
+
   return (
     <>
+      {postValue.map(p => {
+        const text = DOMPurify.sanitize(p.text);
+        return (
+          <div key={p.id} className="post-card">
+            <div className="post-header">
+              <div className="user-profile">
+
+              </div>
+              <div className="profile-info">
+                <div className="username">User Name</div>
+                <div className="role">Tutor / Web Development</div>
+              </div>
+            </div>
+            <div className="post-text">
+              {parser(text)}
+            </div>
+            {p.media.length > 0
+              ? <div className="post-card_img">
+                  <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />
+                </div>
+              : ""}
+            <div className="post-card_interaction">
+              <LikeButton />
+              <CommentButton />
+              <BookmarkButton />
+              <ShareButton />
+            </div>
+          </div>
+        )
+      })}
       <div className="post-card">
         <div className="post-header">
           <div className="user-profile">
 
           </div>
-          <div className="post-text">
-            Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
+          <div className="profile-info">
+            <div className="username">User Name</div>
+            <div className="role">Tutor / Web Development</div>
           </div>
+        </div>
+        <div className="post-text">
+          Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
         </div>
         <div className="post-card_img">
           <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />
@@ -65,9 +143,13 @@ function PostCard(){
           <div className="user-profile">
 
           </div>
-          <div className="post-text">
-            Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
+          <div className="profile-info">
+            <div className="username">User Name</div>
+            <div className="role">Student / Senior High School - G11</div>
           </div>
+        </div>
+        <div className="post-text">
+          Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
         </div>
         <div className="post-card_img">
           <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />
@@ -84,9 +166,16 @@ function PostCard(){
           <div className="user-profile">
 
           </div>
-          <div className="post-text">
-            Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
+          <div className="profile-info">
+            <div className="username">User Name</div>
+            <div className="role">Student / Senior High School - G11</div>
           </div>
+        </div>
+        <div className="post-text">
+          Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
+        </div>
+        <div className="post-card_img">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />
         </div>
         <div className="post-card_interaction">
           <LikeButton />
@@ -100,9 +189,13 @@ function PostCard(){
           <div className="user-profile">
 
           </div>
-          <div className="post-text">
-            Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
+          <div className="profile-info">
+            <div className="username">User Name</div>
+            <div className="role">Student / Senior High School - G11</div>
           </div>
+        </div>
+        <div className="post-text">
+          Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
         </div>
         <div className="post-card_img">
           <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />

@@ -9,6 +9,7 @@ import { HomePage } from './pages/HomePage'
 import { CommunityPage } from './pages/CommunityPage'
 import { MessagePage } from './pages/MessagePage'
 import { CreatePostProvider } from './utils/CreatePost'
+import { PostProvider } from './utils/CreatePost'
 
 function App() {
   useEffect(() => {
@@ -20,14 +21,16 @@ function App() {
   return (
     <>
       <CreatePostProvider>
-        <Routes>
-          <Route path='/' element={<LoginPage />} />
-          <Route path='/' element={<Header />}>
-            <Route path='/home' element={<HomePage />} />
-            <Route path='/community' element={<CommunityPage />} />
-            <Route path="/messages" element={<MessagePage />} />
-          </Route>
-        </Routes>
+        <PostProvider>
+          <Routes>
+            <Route path='/' element={<LoginPage />} />
+            <Route path='/' element={<Header />}>
+              <Route path='/home' element={<HomePage />} />
+              <Route path='/community' element={<CommunityPage />} />
+              <Route path="/messages" element={<MessagePage />} />
+            </Route>
+          </Routes>
+        </PostProvider>
       </CreatePostProvider>
     </>
   )

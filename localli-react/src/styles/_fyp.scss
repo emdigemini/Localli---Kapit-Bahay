@@ -96,7 +96,9 @@
 
         .post-header {
           display: flex;
-          padding: 20px 10px;
+          align-items: center;
+          padding: 20px 10px 10px;
+          gap: 10px;
 
           .user-profile {
             height: 40px;
@@ -105,11 +107,27 @@
             border-radius: 50%;
           }
 
-          .post-text {
-            max-width: 500px;
-            width: auto;
-            margin: 5px 0 0 20px;
+          .profile-info {
+            display: flex;
+            flex-direction: column;
+
+            .username {
+              font-weight: 700;
+            }
+
+            .role {
+              font-size: 12px;
+              color: #666;
+            }
           }
+          
+        }
+
+        .post-text {
+          width: 100%;
+          width: auto;
+          margin: 5px 15px;
+          white-space: pre-wrap;
         }
 
         .post-card_img {
