@@ -76,7 +76,7 @@ export function CreatePostUtility(){
     if(writePostRef.current.textContent.length > 0 || prevMedia.length > 0){
       const id = crypto.randomUUID();
       const value = {
-        id, text: postText, media: prevMedia
+        id, text: postText, media: [...prevMedia]
       }
       addPostValue(value);
       setPostText("");
@@ -148,8 +148,8 @@ export function CreatePostUtility(){
 
 function PostCard(){
   const { postValue } = useContext(PostRender);
-  const [ renderPhoto, setRenderPhoto ] = useState(null);
-  const [ renderVideo, setRenderVideo ] = useState(null);
+  const [ renderPhoto, setRenderPhoto ] = useState([]);
+  const [ renderVideo, setRenderVideo ] = useState([]);
 
   useEffect(() => {
     const photo = postValue
@@ -159,9 +159,9 @@ function PostCard(){
       .flatMap(post => post.media)
       .filter(file => file.type.startsWith("video/"));
 
-    const photoUrl = photo.map(file => URL.createObjectURL(file));
-    const videoUrl = video.map(file => URL.createObjectURL(file));
-    
+    const photoUrl = photo.map(file => ({url: URL.createObjectURL(file), file}));
+    const videoUrl = video.map(file => ({url: URL.createObjectURL(file), file}));
+
     setRenderPhoto(photoUrl);
     setRenderVideo(videoUrl);
 
@@ -177,13 +177,15 @@ function PostCard(){
     <>
       {postValue.map(p => {
         const text = DOMPurify.sanitize(p.text);
+        const urlPhoto = renderPhoto.filter(u => p.media.includes(u.file));
+
         return (
           <div key={p.id} className="post-card">
             <div className="post-header">
               <div className="user-profile">
 
               </div>
-              <div className="profile-info">
+              <div className="profile-info">  
                 <div className="username">User Name</div>
                 <div className="role">Tutor / Web Development</div>
               </div>
@@ -191,11 +193,11 @@ function PostCard(){
             <div className="post-text">
               {parser(text)}
             </div>
-            {p.media.length > 0
-              ? <div className="post-card_img">
-                  <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />
-                </div>
-              : ""}
+              <div className="post-card_img">
+                {urlPhoto.map((u, i) => {
+                  return <img key={i} src={u.url} alt="post-img" />
+                })}
+              </div>
             <div className="post-card_interaction">
               <LikeButton />
               <CommentButton />
@@ -320,12 +322,16 @@ function PostBox(){
 
 
 function UploadImg(){
+  const { toggleCreatePost } = useContext(CreatePost);
   const { setPrevMedia } = useContext(SelectedMedia);
   const selectMedia = useRef(null);
   
   function handleMedia(e){
     const files = [...e.target.files];
-    setPrevMedia(prev => [...prev, files]);
+    setPrevMedia(prev => [...prev, ...files]);
+    if(files.length > 0){
+      toggleCreatePost(true);
+    }
   }
 
   const uploadMedia = () => {
