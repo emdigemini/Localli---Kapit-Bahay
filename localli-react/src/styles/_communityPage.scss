@@ -131,3 +131,37 @@
     }
   }
 }
+
+
+@media screen and (max-width: 1130px) {
+  .community-container {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .card {
+      min-width: 300px;
+      width: 90%;
+    }
+  } 
+}
+
+@media screen and (max-width: 922px) {
+  .community-container {
+    .header {
+      flex-direction: column;
+      gap: 15px;
+      & p:nth-child(1) {
+        align-self: flex-start;
+      }
+      & p:nth-child(2) {
+        align-self: flex-end;
+      }
+    }
+
+    .card {
+      min-width: 300px;
+      width: 90%;
+    }
+  } 
+}
