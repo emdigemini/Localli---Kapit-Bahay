@@ -15,16 +15,20 @@ export function PostFeed(){
 }
 
 export function CreatePostUtility(){
+  const { prevMedia, setPrevMedia } = useContext(SelectedMedia);
   const { toggleCreatePost } = useContext(CreatePost);
   const { addPostValue } = useContext(PostRender);
-  const [ postText, setPostText ] = useState("");
-  const createPostRef = useRef(null);
-  const writePostRef = useRef(null);
 
-  const { prevMedia, setPrevMedia } = useContext(SelectedMedia);
+  const [ postText, setPostText ] = useState("");
   const [ prevPhoto, setPrevPhoto ] = useState([]);
   const [ prevVideo, setPrevVideo ] = useState([]);
 
+  const createPostRef = useRef(null);
+  const writePostRef = useRef(null);
+
+  // ----------------------------
+  // Generate preview URLs for images & videos
+  // ----------------------------
   useEffect(() => {
     const photo = prevMedia.filter(file => file.type.startsWith("image/"));
     const video = prevMedia.filter(file => file.type.startsWith("video/"));
@@ -38,17 +42,26 @@ export function CreatePostUtility(){
     };
   }, [prevMedia])
 
+  // ----------------------------
+  // Remove media from selected list
+  // ----------------------------
   const removeMedia = (i) => {
     const newMedia = prevMedia.filter((_, id) => id !== i);
     setPrevMedia(newMedia);
   }
 
+  // ----------------------------
+  // Close post box if clicked outside
+  // ----------------------------
   const postBoxHandler = (e) => {
     if(!createPostRef.current.contains(e.target)){
       toggleCreatePost(false);
     } else return;
   }
 
+  // ----------------------------
+  // Update post text from contentEditable
+  // ----------------------------
   const inputPostText = (e) => {
     const text = e.target.innerHTML
     .replaceAll('<div>', '<br>')
@@ -56,18 +69,25 @@ export function CreatePostUtility(){
     setPostText(text);
   }
 
+  // ----------------------------
+  // Upload post
+  // ----------------------------
   const uploadPost = () => {
-    if(writePostRef.current.textContent.length > 0){
+    if(writePostRef.current.textContent.length > 0 || prevMedia.length > 0){
       const id = crypto.randomUUID();
       const value = {
-        id, text: postText, media: ""
+        id, text: postText, media: prevMedia
       }
       addPostValue(value);
       setPostText("");
+      setPrevMedia([]);
       toggleCreatePost(false);
     } else return;
   }
 
+  // ----------------------------
+  // Render
+  // ----------------------------
   return (
     <div onClick={postBoxHandler} className="create-post-box">
       <div ref={createPostRef} className="create-post">
@@ -128,6 +148,30 @@ export function CreatePostUtility(){
 
 function PostCard(){
   const { postValue } = useContext(PostRender);
+  const [ renderPhoto, setRenderPhoto ] = useState(null);
+  const [ renderVideo, setRenderVideo ] = useState(null);
+
+  useEffect(() => {
+    const photo = postValue
+      .flatMap(post => post.media)
+      .filter(file => file.type.startsWith("image/"));
+    const video = postValue
+      .flatMap(post => post.media)
+      .filter(file => file.type.startsWith("video/"));
+
+    const photoUrl = photo.map(file => URL.createObjectURL(file));
+    const videoUrl = video.map(file => URL.createObjectURL(file));
+    
+    setRenderPhoto(photoUrl);
+    setRenderVideo(videoUrl);
+
+    return () => {
+      photoUrl.forEach(file => URL.revokeObjectURL(file));
+      videoUrl.forEach(file => URL.revokeObjectURL(file));
+    }
+
+  }, [postValue])
+
 
   return (
     <>
