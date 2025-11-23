@@ -149,27 +149,18 @@ export function CreatePostUtility(){
 
 function PostCard(){
   const { postValue } = useContext(PostRender);
-  const [ renderPhoto, setRenderPhoto ] = useState([]);
-  const [ renderVideo, setRenderVideo ] = useState([]);
+  const [ renderMedia, setRenderMedia ] = useState([]);
 
   useEffect(() => {
-    const photoUrl = postValue.flatMap(post => {
-        return post.file
-        .filter(p => p.media.type.startsWith("image/"))
-        .map(p => ({ postId: post.id, id: p.id, url: URL.createObjectURL(p.media) }))
+    const mediaUrls = postValue.flatMap(post => {
+      return post.file
+        .map(p => ({ postId: post.id, id: p.id, url: URL.createObjectURL(p.media), type: p.media.type }))
     });
 
-    const videoUrl = postValue.flatMap(post => {
-        return post.file
-        .filter(p => p.media.type.startsWith("video/"))
-        .map(p => ({ postId: post.id, id: p.id, url: URL.createObjectURL(p.media) }))
-    });
-    setRenderPhoto(photoUrl);
-    setRenderVideo(videoUrl);
+    setRenderMedia(mediaUrls);
 
     return () => {
-      photoUrl.forEach(file => URL.revokeObjectURL(file.url));
-      videoUrl.forEach(file => URL.revokeObjectURL(file.url));
+      mediaUrls.forEach(file => URL.revokeObjectURL(file.url));
     }
 
   }, [postValue])
@@ -179,8 +170,7 @@ function PostCard(){
     <>
       {postValue.map(p => {
         const text = DOMPurify.sanitize(p.text);
-        const urlPhoto = renderPhoto.filter(u => u.postId === p.id);
-        console.log(urlPhoto);
+        const urlMedia = renderMedia.filter(u => u.postId === p.id);
 
         return (
           <div key={p.id} className="post-card">
@@ -197,7 +187,7 @@ function PostCard(){
               {parser(text)}
             </div>
             <div className="post-card_img">
-                <ImgSlider key={p.id} post={p} media={urlPhoto} />
+                <MediaSlider key={p.id} post={p} media={urlMedia} />
             </div>
             <div className="post-card_interaction">
               <LikeButton />
@@ -222,7 +212,7 @@ function PostCard(){
           Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
         </div>
         
-        <ImgSlider />
+        <MediaSlider />
         <div className="post-card_interaction">
           <LikeButton />
           <CommentButton />
@@ -303,28 +293,32 @@ function PostCard(){
   )
 }
 
-function ImgSlider({ post, media }){
+function MediaSlider({ post, media }){
   const [ activeIndex, setActiveIndex ] = useState(0);
 
-  const next = () => {
+  const next = useCallback(() =>{
     setActiveIndex(i => {
       if(i === media.length - 1) return i;
       return i + 1;
     })
-  }
+  }, [media]);
 
-  const prev = () => {
+  const prev = useCallback(() => {
     setActiveIndex(i => {
       if(i === 0) return i;
       return i - 1;
     })
-  }
+  }, [media]);
 
   if (!media || media.length === 0) return null;
 
   return (
-    <>
-      <img src={media[activeIndex].url} alt="post img" />
+    <> 
+      {media[activeIndex].type.startsWith("image/")
+        ? <img src={media[activeIndex].url} alt="post img" />
+        : <video src={media[activeIndex].url} controls autoPlay />
+      }
+      
       {post?.file.length > 1 && (
         <>
           <div className="img-count">{activeIndex+1} / {media.length}</div>
