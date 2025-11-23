@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { CreatePost, PostRender, SelectedMedia } from "../utils/CreatePost";
 import DOMPurify from "dompurify";
 import parser from "html-react-parser";
@@ -30,10 +30,12 @@ export function CreatePostUtility(){
   // Generate preview URLs for images & videos
   // ----------------------------
   useEffect(() => {
-    const photo = prevMedia.filter(file => file.type.startsWith("image/"));
-    const video = prevMedia.filter(file => file.type.startsWith("video/"));
-    const photoUrl = photo.map(file => URL.createObjectURL(file));
-    const videoUrl = video.map(file => URL.createObjectURL(file));
+    const photo = prevMedia.filter(f => f.media.type.startsWith("image/"));
+    const video = prevMedia.filter(f => f.media.type.startsWith("video/"));
+    console.log(photo);
+    const photoUrl = photo.map(file => URL.createObjectURL(file.media));
+    const videoUrl = video.map(file => URL.createObjectURL(file.media));
+
     setPrevPhoto(photoUrl);
     setPrevVideo(videoUrl);
     return () => {
@@ -78,6 +80,7 @@ export function CreatePostUtility(){
       const value = {
         id, text: postText, media: [...prevMedia]
       }
+      console.log(value);
       addPostValue(value);
       setPostText("");
       setPrevMedia([]);
@@ -193,11 +196,9 @@ function PostCard(){
             <div className="post-text">
               {parser(text)}
             </div>
-              <div className="post-card_img">
-                {urlPhoto.map((u, i) => {
-                  return <img key={i} src={u.url} alt="post-img" />
-                })}
-              </div>
+              {urlPhoto.map((u, i) => {
+                return <ImgSlider key={i} media={u.url} />
+              })}
             <div className="post-card_interaction">
               <LikeButton />
               <CommentButton />
@@ -220,9 +221,8 @@ function PostCard(){
         <div className="post-text">
           Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
         </div>
-        <div className="post-card_img">
-          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />
-        </div>
+        
+        <ImgSlider />
         <div className="post-card_interaction">
           <LikeButton />
           <CommentButton />
@@ -303,6 +303,39 @@ function PostCard(){
   )
 }
 
+function ImgSlider(){
+  const [ activeIndex, setActiveIndex ] = useState(0);
+
+  const next = () => {
+    setActiveIndex(i => {
+      if(i === 4 - 1) return i;
+      return i + 1;
+    })
+  }
+
+  const prev = () => {
+    setActiveIndex(i => {
+      if(i === 0) return;
+      return i - 1;
+    })
+  }
+
+  return (
+    <div className="post-card_img">
+      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" className="active" />
+      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" className="hide" />
+      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" className="hide" />
+      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" className="hide" />
+      <div onClick={next} className="slide-right">
+        <i className="bi bi-chevron-right"></i>
+      </div>
+      <div onClick={prev} className="slide-left">
+        <i className="bi bi-chevron-left"></i>
+      </div>
+    </div>
+  )
+}
+
 function PostBox(){
   const { toggleCreatePost } = useContext(CreatePost);
 
@@ -327,7 +360,13 @@ function UploadImg(){
   const selectMedia = useRef(null);
   
   function handleMedia(e){
-    const files = [...e.target.files];
+    const selectedFiles = [...e.target.files];
+    const files = selectedFiles.map(file => {
+      return {
+        media: file,
+        id: crypto.randomUUID()
+      }
+    })
     setPrevMedia(prev => [...prev, ...files]);
     if(files.length > 0){
       toggleCreatePost(true);
@@ -358,12 +397,19 @@ function UploadImg(){
 }
 
 function AddMedia(){
-  const { setPrevMedia } = useContext(SelectedMedia);
+  const { prevMedia, setPrevMedia } = useContext(SelectedMedia);
   const selectMedia = useRef(null);
 
   function handleMedia(e){
-    const files = [...e.target.files];
+    const selectedFiles = [...e.target.files];
+    const files = selectedFiles.map(file => {
+      return {
+        media: file,
+        id: crypto.randomUUID()
+      }
+    })
     setPrevMedia(prev => [...prev, ...files]);
+    console.log(prevMedia);
   }
 
   return (
