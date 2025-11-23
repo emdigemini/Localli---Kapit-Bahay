@@ -19,16 +19,16 @@ export function CreatePostProvider({ children }){
 export const PostRender = createContext();
 
 export function PostProvider({ children }){
-  const [ postValue, setPostValue ] = useState([]);
+  const [ posts, setPost ] = useState([]);
 
-  const addPostValue = (value) => {
-    setPostValue(prev => {
+  const addPost = (value) => {
+    setPost(prev => {
       return [...prev, value].sort((a, b) => b.timestamp - a.timestamp)
     });
   }
 
   return (
-    <PostRender.Provider value={{ postValue, addPostValue }}>
+    <PostRender.Provider value={{ posts, addPost, setPost }}>
       {children}
     </PostRender.Provider>
   )

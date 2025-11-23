@@ -17,7 +17,7 @@ export function PostFeed(){
 export function CreatePostUtility(){
   const { prevMedia, setPrevMedia } = useContext(SelectedMedia);
   const { toggleCreatePost } = useContext(CreatePost);
-  const { addPostValue } = useContext(PostRender);
+  const { addPost } = useContext(PostRender);
 
   const [ postText, setPostText ] = useState("");
   const [ prevPhoto, setPrevPhoto ] = useState([]);
@@ -79,7 +79,7 @@ export function CreatePostUtility(){
       const timestamp = Date.now();
       const id = crypto.randomUUID();
       const value = { id, text: postText, file: [...prevMedia], timestamp }
-      addPostValue(value);
+      addPost(value);
       setPostText("");
       setPrevMedia([]);
       toggleCreatePost(false);
@@ -148,11 +148,12 @@ export function CreatePostUtility(){
 }
 
 function PostCard(){
-  const { postValue } = useContext(PostRender);
+  const { posts } = useContext(PostRender);
   const [ renderMedia, setRenderMedia ] = useState([]);
 
   useEffect(() => {
-    const mediaUrls = postValue.flatMap(post => {
+    const mediaUrls = posts.flatMap(post => {
+      if(!post.file) return [];
       return post.file
         .map(p => ({ postId: post.id, id: p.id, url: URL.createObjectURL(p.media), type: p.media.type }))
     });
@@ -163,12 +164,12 @@ function PostCard(){
       mediaUrls.forEach(file => URL.revokeObjectURL(file.url));
     }
 
-  }, [postValue])
+  }, [posts])
 
 
   return (
     <>
-      {postValue.map(p => {
+      {posts.map(p => {
         const text = DOMPurify.sanitize(p.text);
         const urlMedia = renderMedia.filter(u => u.postId === p.id);
 
@@ -187,32 +188,34 @@ function PostCard(){
               {parser(text)}
             </div>
             <div className="post-card_img">
-                <MediaSlider key={p.id} post={p} media={urlMedia} />
+                <MediaSlider post={p} media={urlMedia} />
             </div>
             <div className="post-card_interaction">
-              <LikeButton />
+              <LikeButton postId={p.id} />
               <CommentButton />
-              <BookmarkButton />
               <ShareButton />
+              <BookmarkButton postId={p.id} />
             </div>
           </div>
         )
       })}
-      <div className="post-card">
+      <div key={0} className="post-card">
         <div className="post-header">
           <div className="user-profile">
 
           </div>
           <div className="profile-info">
-            <div className="username">User Name</div>
-            <div className="role">Tutor / Web Development</div>
+            <div className="username">KAPIT BAHAY</div>
+            <div className="role">Developer / Admin</div>
           </div>
         </div>
         <div className="post-text">
-          Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
+        Hey there! <br />
+        Want to level up your learning? <br />
+        Whether it's Math, Science, English, History, IT, Accounting, or Economics, you're in the right place. <br />
+        Connect with your selected tutor, chat and collaborate, or be friends with fellow learners. Explore resources and get step-by-step guidance to make learning easier and more fun!
         </div>
-        
-        <MediaSlider />
+        <img src="image/kapitbahay.png" alt="post img" />
         <div className="post-card_interaction">
           <LikeButton />
           <CommentButton />
@@ -220,7 +223,30 @@ function PostCard(){
           <ShareButton />
         </div>
       </div>
-        <div className="post-card">
+        <div key={1} className="post-card">
+        <div className="post-header">
+          <div className="user-profile">
+
+          </div>
+          <div className="profile-info">
+            <div className="username">User Name</div>
+            <div className="role">Student / Senior High School - G11</div>
+          </div>
+        </div>
+        <div className="post-text">
+          Hi! I'm looking for a tutor to help me learn the MERN Stack. I want someone patient who can guide me step by step through building full-stack applications, understanding React, Node.js, Express, and MongoDB. Prefer online or nearby sessions. Thanks!
+        </div>
+        <div className="post-card_img">
+          <img src="https://images.unsplash.com/photo-1593720213428-28a5b9e94613?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="post img" />
+        </div>
+        <div className="post-card_interaction">
+          <LikeButton />
+          <CommentButton />
+          <BookmarkButton />
+          <ShareButton />
+        </div>
+      </div>
+      <div key={2} className="post-card">
         <div className="post-header">
           <div className="user-profile">
 
@@ -234,7 +260,7 @@ function PostCard(){
           Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
         </div>
         <div className="post-card_img">
-          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />
+          <img src="https://images.unsplash.com/photo-1739858446889-b20d63614d73?q=80&w=1938&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="post img" />
         </div>
         <div className="post-card_interaction">
           <LikeButton />
@@ -243,7 +269,7 @@ function PostCard(){
           <ShareButton />
         </div>
       </div>
-      <div className="post-card">
+      <div key={3} className="post-card">
         <div className="post-header">
           <div className="user-profile">
 
@@ -254,33 +280,10 @@ function PostCard(){
           </div>
         </div>
         <div className="post-text">
-          Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
+          Hi! I'm a BSBA student looking for a tutor to help me understand my college subjects better. I often get lost with topics like Accounting, Finance, Economics, or Marketing, and I need someone patient to guide me step by step. Prefer online or nearby sessions. Thanks!
         </div>
         <div className="post-card_img">
-          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />
-        </div>
-        <div className="post-card_interaction">
-          <LikeButton />
-          <CommentButton />
-          <BookmarkButton />
-          <ShareButton />
-        </div>
-      </div>
-      <div className="post-card">
-        <div className="post-header">
-          <div className="user-profile">
-
-          </div>
-          <div className="profile-info">
-            <div className="username">User Name</div>
-            <div className="role">Student / Senior High School - G11</div>
-          </div>
-        </div>
-        <div className="post-text">
-          Hi! I'm struggling with algebra, especially solving quadratic equations. I get lost in factoring and need someone patient to explain step by step. Prefer online or nearby sessions. Thanks!
-        </div>
-        <div className="post-card_img">
-          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />
+          <img src="https://images.unsplash.com/photo-1753955900083-b62ee8d97805?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="post img" />
         </div>
         <div className="post-card_interaction">
           <LikeButton />
@@ -441,9 +444,23 @@ function TagUser(){
 }
 
 /** INTERACTIONS */
-function LikeButton(){
+function LikeButton({ postId }){
+  const { posts, setPost } = useContext(PostRender);
+  const [ like, setLike ] = useState(false);
+
+  const likePost = () => {
+    const addLike = !like; 
+    setLike(addLike);
+    const updatedPosts = posts.map(post => {
+      if (post.id === postId) {
+        return { ...post, like: addLike }; 
+      } return post;
+    });
+    setPost(updatedPosts);
+  };
+
   return (
-    <i className="bi bi-heart"></i>
+    <i onClick={likePost} className={`bi bi-heart${like ? '-fill liked' : ''}`}></i>
   )
 }
 
@@ -459,8 +476,24 @@ function ShareButton(){
   )
 }
 
-function BookmarkButton(){
+function BookmarkButton({ postId }){
+  const { posts, setPost } = useContext(PostRender);
+  const [ bookmark, setSave ] = useState(false);
+
+  const savePost = () => {
+    const addToSave = !bookmark;
+    setSave(addToSave);
+    const updatedPosts = posts.map(post => {
+      if(post.id === postId){
+        return {...posts, save: addToSave};
+      } return posts;
+    });
+    setPost(updatedPosts);
+  }
+
   return (
-    <i className="bi bi-bookmark"></i>
+    <i onClick={savePost} className="bi bi-bookmark">
+      {bookmark && <i className="bi bi-bookmark-fill saved"></i>}  
+    </i>
   )
 }

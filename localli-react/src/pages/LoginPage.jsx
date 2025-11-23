@@ -3,8 +3,9 @@ import { useNavigate } from "react-router";
 import { useState, useEffect, useRef } from 'react'
 
 export function LoginPage(){
-  const [switched, setSwitched] = useState(false);
-  const [wasSwitched, setWasSwitched] = useState(false);
+  const [ switched, setSwitched ] = useState(false);
+  const [ wasSwitched, setWasSwitched ] = useState(false);
+  const [ demoMode, setDemoMode ] = useState(false);
   const orangeBox = useRef({});
   const navigate = useNavigate();
 
@@ -36,11 +37,12 @@ export function LoginPage(){
           : wasSwitched ? 'unswitch' : ''}`
           }>
           {switched 
-          ? <LoginHeader_Students navigate={navigate} />
-          : <LoginHeader_Tutors navigate={navigate} />
+          ? <LoginHeader_Students setDemoMode={setDemoMode} />
+          : <LoginHeader_Tutors setDemoMode={setDemoMode} />
           }
         </div>
       </div>
+      {demoMode && <DemoMessageState navigate={navigate} setDemoMode={setDemoMode} />}
     </>
   )
 }
@@ -81,7 +83,7 @@ function OrangeBox_Tutors(){
   )
 }
 
-function LoginHeader_Students({ navigate }){
+function LoginHeader_Students({ setDemoMode }){
   const [value1, setValue1] = useState("");
   const [password, setPassword] = useState("");
   const [ showPassword, setShowPassword ] = useState(false);
@@ -125,8 +127,8 @@ function LoginHeader_Students({ navigate }){
         </div>
         <div className="btn-group">
           <button className='login-btn' 
-            onClick={() => navigate("home")}
-          >LOGIN</button>
+            onClick={() => setDemoMode(true)}
+          >DEMO VERSION</button>
           <button className='signup-btn'>CREATE ACCOUNT</button>
         </div>
       </div>
@@ -136,7 +138,7 @@ function LoginHeader_Students({ navigate }){
   )
 }
 
-function LoginHeader_Tutors({ navigate }){
+function LoginHeader_Tutors({ setDemoMode }){
   const [value1, setValue1] = useState("");
   const [password, setPassword] = useState("");
   const [ showPassword, setShowPassword ] = useState(false);
@@ -180,13 +182,45 @@ function LoginHeader_Tutors({ navigate }){
         </div>
         <div className="btn-group">
           <button className='login-btn'
-            onClick={() => navigate("home")}
-          >LOGIN</button>
+            onClick={() => setDemoMode(true)}
+          >DEMO VERSION</button>
           <button className='signup-btn'>CREATE ACCOUNT</button>
         </div>
       </div>
 
       <a data-aos="zoom-in" id='contact-support' href="#">Contact support.</a>
     </>
+  )
+}
+
+function DemoMessageState({ navigate, setDemoMode }){
+  const nav = () => {
+    navigate("/home");
+    setDemoMode(false);
+  }
+
+  return (
+    <div className="demo-message-box">
+      <div className="demo-message">
+        <p>
+          You are now using the demo mode of this app. <br />
+          In this version, you can try the basic features such as:
+        </p>
+        <ul>
+          <li>Post anything in the community feed</li>
+          <li>Checking messages</li>
+          <li>Viewing notifications</li>
+          <li>Exploring the community page to find tutors or students</li>
+          <li>Browsing sample profiles and posts</li>
+        </ul>
+        <p>
+          This demo is meant to show how the platform works.
+          Some features are temporarily unavailable while the website/app is still under development.
+        </p>
+        <button onClick={nav}>
+          CONTINUE
+        </button>
+      </div>
+    </div>
   )
 }
