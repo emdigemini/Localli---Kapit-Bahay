@@ -22,7 +22,9 @@ export function PostProvider({ children }){
   const [ postValue, setPostValue ] = useState([]);
 
   const addPostValue = (value) => {
-    setPostValue(prev => [...prev, value]);
+    setPostValue(prev => {
+      return [...prev, value].sort((a, b) => b.timestamp - a.timestamp)
+    });
   }
 
   return (

@@ -32,7 +32,7 @@ export function CreatePostUtility(){
   useEffect(() => {
     const photo = prevMedia.filter(f => f.media.type.startsWith("image/"));
     const video = prevMedia.filter(f => f.media.type.startsWith("video/"));
-    console.log(photo);
+
     const photoUrl = photo.map(file => URL.createObjectURL(file.media));
     const videoUrl = video.map(file => URL.createObjectURL(file.media));
 
@@ -76,11 +76,9 @@ export function CreatePostUtility(){
   // ----------------------------
   const uploadPost = () => {
     if(writePostRef.current.textContent.length > 0 || prevMedia.length > 0){
+      const timestamp = Date.now();
       const id = crypto.randomUUID();
-      const value = {
-        id, text: postText, media: [...prevMedia]
-      }
-      console.log(value);
+      const value = { id, text: postText, file: [...prevMedia], timestamp }
       addPostValue(value);
       setPostText("");
       setPrevMedia([]);
@@ -155,22 +153,23 @@ function PostCard(){
   const [ renderVideo, setRenderVideo ] = useState([]);
 
   useEffect(() => {
-    const photo = postValue
-      .flatMap(post => post.media)
-      .filter(file => file.type.startsWith("image/"));
-    const video = postValue
-      .flatMap(post => post.media)
-      .filter(file => file.type.startsWith("video/"));
+    const photoUrl = postValue.flatMap(post => {
+        return post.file
+        .filter(p => p.media.type.startsWith("image/"))
+        .map(p => ({ postId: post.id, id: p.id, url: URL.createObjectURL(p.media) }))
+    });
 
-    const photoUrl = photo.map(file => ({url: URL.createObjectURL(file), file}));
-    const videoUrl = video.map(file => ({url: URL.createObjectURL(file), file}));
-
+    const videoUrl = postValue.flatMap(post => {
+        return post.file
+        .filter(p => p.media.type.startsWith("video/"))
+        .map(p => ({ postId: post.id, id: p.id, url: URL.createObjectURL(p.media) }))
+    });
     setRenderPhoto(photoUrl);
     setRenderVideo(videoUrl);
 
     return () => {
-      photoUrl.forEach(file => URL.revokeObjectURL(file));
-      videoUrl.forEach(file => URL.revokeObjectURL(file));
+      photoUrl.forEach(file => URL.revokeObjectURL(file.url));
+      videoUrl.forEach(file => URL.revokeObjectURL(file.url));
     }
 
   }, [postValue])
@@ -180,7 +179,8 @@ function PostCard(){
     <>
       {postValue.map(p => {
         const text = DOMPurify.sanitize(p.text);
-        const urlPhoto = renderPhoto.filter(u => p.media.includes(u.file));
+        const urlPhoto = renderPhoto.filter(u => u.postId === p.id);
+        console.log(urlPhoto);
 
         return (
           <div key={p.id} className="post-card">
@@ -196,9 +196,9 @@ function PostCard(){
             <div className="post-text">
               {parser(text)}
             </div>
-              {urlPhoto.map((u, i) => {
-                return <ImgSlider key={i} media={u.url} />
-              })}
+            <div className="post-card_img">
+                <ImgSlider key={p.id} post={p} media={urlPhoto} />
+            </div>
             <div className="post-card_interaction">
               <LikeButton />
               <CommentButton />
@@ -303,36 +303,40 @@ function PostCard(){
   )
 }
 
-function ImgSlider(){
+function ImgSlider({ post, media }){
   const [ activeIndex, setActiveIndex ] = useState(0);
 
   const next = () => {
     setActiveIndex(i => {
-      if(i === 4 - 1) return i;
+      if(i === media.length - 1) return i;
       return i + 1;
     })
   }
 
   const prev = () => {
     setActiveIndex(i => {
-      if(i === 0) return;
+      if(i === 0) return i;
       return i - 1;
     })
   }
 
+  if (!media || media.length === 0) return null;
+
   return (
-    <div className="post-card_img">
-      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" className="active" />
-      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" className="hide" />
-      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" className="hide" />
-      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0aCUyMG5vdGVib29rfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="post img" className="hide" />
-      <div onClick={next} className="slide-right">
-        <i className="bi bi-chevron-right"></i>
-      </div>
-      <div onClick={prev} className="slide-left">
-        <i className="bi bi-chevron-left"></i>
-      </div>
-    </div>
+    <>
+      <img src={media[activeIndex].url} alt="post img" />
+      {post?.file.length > 1 && (
+        <>
+          <div className="img-count">{activeIndex+1} / {media.length}</div>
+          <div onClick={next} className="slide-right">
+            <i className="bi bi-chevron-right"></i>
+          </div>
+          <div onClick={prev} className="slide-left">
+            <i className="bi bi-chevron-left"></i>
+          </div>
+        </>
+      )}
+    </>
   )
 }
 
@@ -397,7 +401,7 @@ function UploadImg(){
 }
 
 function AddMedia(){
-  const { prevMedia, setPrevMedia } = useContext(SelectedMedia);
+  const { setPrevMedia } = useContext(SelectedMedia);
   const selectMedia = useRef(null);
 
   function handleMedia(e){
@@ -409,7 +413,6 @@ function AddMedia(){
       }
     })
     setPrevMedia(prev => [...prev, ...files]);
-    console.log(prevMedia);
   }
 
   return (
