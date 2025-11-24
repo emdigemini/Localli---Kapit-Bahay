@@ -21,8 +21,7 @@ export function CreatePostUtility(){
   const { addPost } = useContext(PostRender);
 
   const [ postText, setPostText ] = useState("");
-  const [ prevPhoto, setPrevPhoto ] = useState([]);
-  const [ prevVideo, setPrevVideo ] = useState([]);
+  const [ mediaPreview, setMediaPreview ] = useState([]);
 
   const createPostRef = useRef(null);
   const writePostRef = useRef(null);
@@ -31,17 +30,11 @@ export function CreatePostUtility(){
   // Generate preview URLs for images & videos
   // ----------------------------
   useEffect(() => {
-    const photo = prevMedia.filter(f => f.media.type.startsWith("image/"));
-    const video = prevMedia.filter(f => f.media.type.startsWith("video/"));
+    const mediaUrl = prevMedia.map(file => ({ url: URL.createObjectURL(file.media), type: file.media.type }));
 
-    const photoUrl = photo.map(file => URL.createObjectURL(file.media));
-    const videoUrl = video.map(file => URL.createObjectURL(file.media));
-
-    setPrevPhoto(photoUrl);
-    setPrevVideo(videoUrl);
+    setMediaPreview(mediaUrl);
     return () => {
-      photoUrl.forEach(u => URL.revokeObjectURL(u));
-      videoUrl.forEach(u => URL.revokeObjectURL(u));
+      mediaUrl.forEach(u => URL.revokeObjectURL(u.url));
     };
   }, [prevMedia])
 
@@ -115,22 +108,18 @@ export function CreatePostUtility(){
         </div>
 
         <div className="prev-media">
-          {prevPhoto.map((url, i) => {
+          {mediaPreview.map((u, i) => {
             return (
-              <div key={i} className="media-prev">
-                <i onClick={() => removeMedia(i)}
-                  className="bi bi-x"></i>
-                <img src={url} alt="prev media" />
-              </div>
-            )
-          })}
-          {prevVideo.map((url, i) => {
-            return (
-              <div key={i} className="media-prev">
-                <i onClick={() => removeMedia(i)}
-                  className="bi bi-x"></i>
-                <video src={url} controls />
-              </div>
+                <div key={i} className="media-prev">
+                  <i onClick={() => removeMedia(i)}
+                    className="bi bi-x"></i>
+                    {
+                      u.type.startsWith("image/") 
+                      ? <img src={u.url} alt="prev media" />
+                      : <video src={u.url} controls />
+                    }
+                </div>
+              
             )
           })}
         </div>
@@ -354,8 +343,6 @@ function PostBox(){
 
 
 /** ICONS */
-
-
 function UploadImg(){
   const { toggleCreatePost } = useContext(CreatePost);
   const { setPrevMedia } = useContext(SelectedMedia);
@@ -370,6 +357,7 @@ function UploadImg(){
       }
     })
     setPrevMedia(prev => [...prev, ...files]);
+    e.target.value = '';
     if(files.length > 0){
       toggleCreatePost(true);
     }
@@ -411,6 +399,7 @@ function AddMedia(){
       }
     })
     setPrevMedia(prev => [...prev, ...files]);
+    e.target.value = '';
   }
 
   return (
@@ -418,7 +407,7 @@ function AddMedia(){
     <input onChange={handleMedia}
       ref={selectMedia}
       type="file"
-      accept="image/&, video/*"
+      accept="image/*, video/*"
       multiple
       style={{
         display: "none"
