@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom"
 import { Navigation } from "./Navigation"
-import { CreatePost } from "../utils/CreatePost"
+import { CreatePost } from "../../context/PostContext"
 import { useContext, useState } from "react"
-import { CreatePostUtility } from "./PostFeed"
+import { CreatePostUtility } from "../Home/PostFeed"
 import { LogoutConfirmation } from "./Navigation"
 
 export function Header(){

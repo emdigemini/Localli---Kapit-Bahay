@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { CreatePost, PostRender, SelectedMedia } from "../utils/CreatePost";
+import { CreatePost, PostRender, SelectedMedia } from "../../context/PostContext";
+
 import DOMPurify from "dompurify";
 import parser from "html-react-parser";
 
@@ -492,8 +493,7 @@ function BookmarkButton({ postId }){
   }
 
   return (
-    <i onClick={savePost} className="bi bi-bookmark">
-      {bookmark && <i className="bi bi-bookmark-fill saved"></i>}  
+    <i onClick={savePost} className={`bi bi-bookmark${bookmark ? '-fill saved' : ''}`}>
     </i>
   )
 }

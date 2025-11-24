@@ -1,6 +1,6 @@
-import { SideCards } from '../components/SideCards'
-import { PostFeed } from '../components/PostFeed'
-import { AsideSection } from '../components/AsideSection'
+import { SideCards } from '../../components/Header/SideCards'
+import { PostFeed } from '../../components/Home/PostFeed'
+import { AsideSection } from '../../components/Home/AsideSection'
 
 export function HomePage(){
 

@@ -142,15 +142,8 @@
     }
 
     .saved {
-      position: absolute;
-      top: 0;
-      left: 0;
       color: #0073ff;
       animation: heart 0.2s ease forwards;
-
-      &:hover {
-        background: none;
-      }
     }
   }
 }

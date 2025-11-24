@@ -3,14 +3,14 @@ import "aos/dist/aos.css"
 import AOS from 'aos'
 import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { Header } from './components/Header'
-import { LoginPage } from "./pages/LoginPage"
-import { HomePage } from './pages/HomePage'
-import { CommunityPage } from './pages/CommunityPage'
-import { MessagePage } from './pages/MessagePage'
-import { CreatePostProvider } from './utils/CreatePost'
-import { PostProvider } from './utils/CreatePost'
-import { PrevMediaProvider } from './utils/CreatePost'
+import { Header } from './components/Header/Header'
+import { LoginPage } from "./pages/LoginSignup/LoginPage"
+import { HomePage } from './pages/Home/HomePage'
+import { CommunityPage } from './pages/Community/CommunityPage'
+import { MessagePage } from './pages/Message/MessagePage'
+import { CreatePostProvider } from './context/PostContext'
+import { PostProvider } from './context/PostContext'
+import { PrevMediaProvider } from './context/PostContext'
 
 function App() {
   useEffect(() => {

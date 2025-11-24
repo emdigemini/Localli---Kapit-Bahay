@@ -1,4 +1,4 @@
-import { SideCards } from "../components/SideCards";
+import { SideCards } from "../../components/Header/SideCards";
 import { useEffect, useRef } from "react"
 
 export function MessagePage(){
