@@ -49,12 +49,12 @@ $anim-ease: ease-in-out;
   0% {
     position: absolute;
     top: 50%;
-    transform: translate(0%, -45%);
+    transform: translate(0%, -50%);
     right: 0;
   } 100% {
     position: absolute;
     top: 50%;
-    transform: translate(0, -45%);
+    transform: translate(0, -50%);
     right: 50vw;
   }
 }
@@ -63,12 +63,12 @@ $anim-ease: ease-in-out;
   0% {
     position: absolute;
     top: 50%;
-    transform: translate(0, -45%);
+    transform: translate(0, -50%);
     right: 50vw;
   } 100% {
     position: absolute;
     top: 50%;
-    transform: translate(0%, -45%);
+    transform: translate(0%, -50%);
     right: 0;
   }
 }

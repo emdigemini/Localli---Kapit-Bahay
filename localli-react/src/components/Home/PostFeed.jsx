@@ -140,6 +140,7 @@ export function CreatePostUtility(){
 function PostCard(){
   const { posts } = useContext(PostRender);
   const [ renderMedia, setRenderMedia ] = useState([]);
+  const [ onComment, setOnComment ] = useState(false);
 
   useEffect(() => {
     const mediaUrls = posts.flatMap(post => {
@@ -182,10 +183,11 @@ function PostCard(){
             </div>
             <div className="post-card_interaction">
               <LikeButton postId={p.id} />
-              <CommentButton />
+              <CommentButton onComment={onComment} setOnComment={setOnComment} />
               <ShareButton />
               <BookmarkButton postId={p.id} />
             </div>
+            {onComment && <CommentSection onComment={onComment} />}
           </div>
         )
       })}
@@ -454,9 +456,47 @@ function LikeButton({ postId }){
   )
 }
 
-function CommentButton(){
+function CommentButton({ onComment, setOnComment }){
   return (
-    <i className="bi bi-chat"></i>
+    <i onClick={() => setOnComment(!onComment)} className={`bi bi-chat${onComment ? '-fill active' : ''}`}></i>
+  )
+}
+
+function CommentSection({ onComment }){
+  const [ commentText, setCommentText ] = useState("");
+  const commentRef = useRef(null);
+
+  useEffect(() => {
+    onComment && commentRef.current.focus();
+  }, [])
+
+  const writeComment = (e) => {
+    const text = e.target.textContent;
+    setCommentText(text);
+  };
+
+  return (
+    <>
+      <div className="comment-section">
+        <div className="comment-box">
+          <div className="profile"></div>
+          <div className="input-box">
+            <p className={`comment-input ${commentRef?.current?.textContent.length > 0 
+            ? "inactive" : ""}`} 
+              contentEditable="true"
+              aria-multiline="true"
+              role="textbox"
+              onInput={writeComment}
+              ref={commentRef}
+            >
+
+            </p>
+            <i className="bi bi-send-arrow-down"></i>
+          </div>
+        </div>
+        <p className="no-comments">No comments yet. <br /> Be the first to share your insights.</p>
+      </div>
+    </>
   )
 }
 
@@ -475,7 +515,7 @@ function BookmarkButton({ postId }){
     setSave(addToSave);
     const updatedPosts = posts.map(post => {
       if(post.id === postId){
-        return {...posts, save: addToSave};
+        return {...post, save: addToSave};
       } return posts;
     });
     setPost(updatedPosts);

@@ -14,7 +14,7 @@ function SuggestUser(){
   return (
     <section className="suggestions">
       <h3>Learners Who Need You</h3>
-      <ul>
+      <ul children="suggested-users">
         <li>
           <span className="small-profile"></span>
           <p>USER ONE</p>
@@ -32,6 +32,9 @@ function SuggestUser(){
           <p>USER FOUR</p>
         </li>
       </ul>
+      <div className="show-more-users">
+        <button>Show More</button>
+      </div>
     </section>
   )
 }

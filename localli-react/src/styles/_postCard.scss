@@ -116,6 +116,91 @@
     }
   }
 
+  .comment-section {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px 15px;
+    background: #f9f9f9;
+    border-top: 1px solid #e0e0e0;
+
+    .comment-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+
+      .profile {
+        height: 35px;
+        width: 35px;
+        background: var(--bg-gray);
+        border-radius: 50%;
+      }
+
+      .input-box {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        background: #FFF;
+        border-radius: 30px;
+        padding: 10px 15px;
+        width: 100%;
+        gap: 10px;
+        height: auto;
+
+        .comment-input {
+          position: relative;
+          width: 100%;
+          border: none;
+          outline: none;
+          font-size: 14px;
+          padding: 10px 0;
+          color: #000;
+          resize: none;
+          background: transparent;
+          max-width: 450px;
+
+          &:focus {
+            border-color: var(--primary-blue);
+          } 
+          &::before {
+            content: "Add a comment...";
+            position: absolute;
+            font-weight: 300;
+            color: #959595;
+            pointer-events: none;
+            z-index: 999;
+          }
+        }
+
+        .comment-input.inactive {
+          &::before {
+            display: none;
+          }
+        }
+
+        i {
+          align-self: flex-end;
+          padding-bottom: 5px;
+          font-size: 20px;
+          color: #328eff;
+          cursor: pointer;
+
+          &:hover {
+            color: #0080ff;
+          }
+        }
+      }
+    }
+    
+
+    .no-comments {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.4;
+      text-align: center;
+    }
+  }
+
   .post-card_interaction {
     display: flex;
     justify-content: space-around;
@@ -144,6 +229,10 @@
     .saved {
       color: #0073ff;
       animation: heart 0.2s ease forwards;
+    }
+
+    .active {
+      color: var(--primary-blue);
     }
   }
 }
