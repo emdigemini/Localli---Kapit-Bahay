@@ -172,24 +172,29 @@
           }
         }
 
-        .comment-input.inactive {
-          &::before {
-            display: none;
-          }
-        }
-
         i {
           align-self: flex-end;
           padding-bottom: 5px;
           font-size: 20px;
-          color: #328eff;
-          cursor: pointer;
-
-          &:hover {
-            color: #0080ff;
-          }
+          color: #aed2ff;
+          cursor: not-allowed;
         }
       }
+    }
+    .comment-box.active {
+      .comment-input {
+        &::before {
+          display: none;
+        }
+      }
+      i {
+        cursor: pointer;
+        color: #2587ff;
+        &:hover {
+          color: #0063dc;
+        }
+      }
+      
     }
     
 

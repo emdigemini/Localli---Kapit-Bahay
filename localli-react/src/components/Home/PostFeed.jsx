@@ -492,11 +492,11 @@ function CommentSection({ postId, onComment }){
   return (
     <>
       <div className="comment-section">
-        <div className="comment-box">
+        <div className={`comment-box ${commentRef?.current?.textContent.length > 0 
+            ? "active" : ""}`}>
           <div className="profile"></div>
           <div className="input-box">
-            <p className={`comment-input ${commentRef?.current?.textContent.length > 0 
-            ? "inactive" : ""}`} 
+            <p className='comment-input' 
               contentEditable="true"
               aria-multiline="true"
               role="textbox"
