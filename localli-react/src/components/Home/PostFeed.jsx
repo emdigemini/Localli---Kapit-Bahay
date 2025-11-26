@@ -139,8 +139,8 @@ export function CreatePostUtility(){
 
 function PostCard(){
   const { posts } = useContext(PostRender);
+  const [ onComment, setOnComment ] = useState([]);
   const [ renderMedia, setRenderMedia ] = useState([]);
-  const [ onComment, setOnComment ] = useState(false);
 
   useEffect(() => {
     const mediaUrls = posts.flatMap(post => {
@@ -183,11 +183,17 @@ function PostCard(){
             </div>
             <div className="post-card_interaction">
               <LikeButton postId={p.id} />
-              <CommentButton onComment={onComment} setOnComment={setOnComment} />
+              <CommentButton 
+                postId={p.id}
+                onComment={onComment}
+                setOnComment={setOnComment}
+              />
               <ShareButton />
               <BookmarkButton postId={p.id} />
             </div>
-            {onComment && <CommentSection onComment={onComment} />}
+            {onComment.includes(p.id) && 
+              <CommentSection postId={p.id} onComment={onComment} />
+            }
           </div>
         )
       })}
@@ -456,18 +462,26 @@ function LikeButton({ postId }){
   )
 }
 
-function CommentButton({ onComment, setOnComment }){
+function CommentButton({ postId, onComment, setOnComment }){
+  const toggleComment = () => {
+    if(onComment.includes(postId)){
+      setOnComment(prev => prev.filter(id => id !== postId));
+    } else {
+      setOnComment(prev => [...prev, postId]);
+    }
+  }
+
   return (
-    <i onClick={() => setOnComment(!onComment)} className={`bi bi-chat${onComment ? '-fill active' : ''}`}></i>
+    <i onClick={toggleComment} className={`bi bi-chat${onComment?.includes(postId) ? '-fill active' : ''}`}></i>
   )
 }
 
-function CommentSection({ onComment }){
-  const [ commentText, setCommentText ] = useState("");
+function CommentSection({ postId, onComment }){
+  const [ commentText, setCommentText ] = useState("");  
   const commentRef = useRef(null);
 
   useEffect(() => {
-    onComment && commentRef.current.focus();
+    onComment.includes(postId) && commentRef.current.focus();
   }, [])
 
   const writeComment = (e) => {

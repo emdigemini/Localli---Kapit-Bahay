@@ -8,9 +8,7 @@ import { LoginPage } from "./pages/LoginSignup/LoginPage"
 import { HomePage } from './pages/Home/HomePage'
 import { CommunityPage } from './pages/Community/CommunityPage'
 import { MessagePage } from './pages/Message/MessagePage'
-import { CreatePostProvider } from './context/PostContext'
-import { PostProvider } from './context/PostContext'
-import { PrevMediaProvider } from './context/PostContext'
+import { CreatePostProvider, PostProvider, PrevMediaProvider } from './context/PostContext'
 
 function App() {
   useEffect(() => {
