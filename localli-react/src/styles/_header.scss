@@ -95,7 +95,7 @@ header {
         color: #4993fb;
       }
 
-      #home, #community, #message, #notification, #bookmark {
+      #home, #community, #message, #notification, #profile {
         position: relative;
         &::before {
           content: '';
@@ -136,6 +136,11 @@ header {
       }
 
       #message {
+        display: flex;
+        .message {
+          height: 28px;
+          width: 28px;
+        }
         &::before {
           content: 'Message';
           opacity: 0;
@@ -146,6 +151,11 @@ header {
       }
 
       #notification {
+        display: flex;
+        .notification {
+          height: 30px;
+          width: 30px;
+        }
         &::before {
           content: 'Notifications';
           opacity: 0;
@@ -155,9 +165,20 @@ header {
         }
       }
 
-      #bookmark {
+      #profile {
+        display: flex;
+        .profile {
+          height: 27px;
+          width: 27px;
+          border-radius: 50%;
+          background: #666;
+          &:hover {
+            background: #4993fb;
+          }
+        }
         &::before {
-          content: 'Bookmark';
+          position: absolute;
+          content: 'Profile';
           opacity: 0;
         } &:hover::before {
           opacity: 1;

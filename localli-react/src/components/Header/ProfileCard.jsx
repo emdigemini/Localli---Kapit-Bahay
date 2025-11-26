@@ -1,6 +1,10 @@
+import { useNavigate } from "react-router"
+
 export function ProfileCard(){
+  const navigate = useNavigate();
+
   return (
-    <div className="profile-card">
+    <div onClick={() => navigate('/profile')} className="profile-card">
       <div className="profile-pic">
 
       </div>

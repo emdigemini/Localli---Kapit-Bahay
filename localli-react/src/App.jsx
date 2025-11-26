@@ -8,6 +8,7 @@ import { LoginPage } from "./pages/LoginSignup/LoginPage"
 import { HomePage } from './pages/Home/HomePage'
 import { CommunityPage } from './pages/Community/CommunityPage'
 import { MessagePage } from './pages/Message/MessagePage'
+import { ProfilePage } from './pages/Profile/ProfilePage'
 import { CreatePostProvider, PostProvider, PrevMediaProvider } from './context/PostContext'
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                 <Route path='/home' element={<HomePage />} />
                 <Route path='/community' element={<CommunityPage />} />
                 <Route path="/messages" element={<MessagePage />} />
+                <Route path="/profile" element={<ProfilePage />} />
               </Route>
             </Routes>
           </PrevMediaProvider>

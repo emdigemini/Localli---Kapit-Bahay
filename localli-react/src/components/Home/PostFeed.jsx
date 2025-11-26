@@ -137,7 +137,7 @@ export function CreatePostUtility(){
   )
 }
 
-function PostCard(){
+export function PostCard(){
   const { posts } = useContext(PostRender);
   const [ onComment, setOnComment ] = useState([]);
   const [ renderMedia, setRenderMedia ] = useState([]);
@@ -188,8 +188,8 @@ function PostCard(){
                 onComment={onComment}
                 setOnComment={setOnComment}
               />
-              <ShareButton />
               <BookmarkButton postId={p.id} />
+              <ShareButton />
             </div>
             {onComment.includes(p.id) && 
               <CommentSection postId={p.id} onComment={onComment} />
@@ -216,10 +216,17 @@ function PostCard(){
         <img src="image/kapitbahay.png" alt="post img" />
         <div className="post-card_interaction">
           <LikeButton />
-          <CommentButton />
+          <CommentButton 
+            postId={0}
+            onComment={onComment}
+            setOnComment={setOnComment}
+          />
           <BookmarkButton />
           <ShareButton />
         </div>
+        {onComment.includes(0) && 
+          <CommentSection postId={0} onComment={onComment} />
+        }
       </div>
         <div key={1} className="post-card">
         <div className="post-header">
@@ -239,10 +246,17 @@ function PostCard(){
         </div>
         <div className="post-card_interaction">
           <LikeButton />
-          <CommentButton />
+          <CommentButton 
+            postId={1}
+            onComment={onComment}
+            setOnComment={setOnComment}
+          />
           <BookmarkButton />
           <ShareButton />
         </div>
+        {onComment.includes(1) && 
+          <CommentSection postId={1} onComment={onComment} />
+        }
       </div>
       <div key={2} className="post-card">
         <div className="post-header">
@@ -262,10 +276,17 @@ function PostCard(){
         </div>
         <div className="post-card_interaction">
           <LikeButton />
-          <CommentButton />
+          <CommentButton 
+            postId={2}
+            onComment={onComment}
+            setOnComment={setOnComment}
+          />
           <BookmarkButton />
           <ShareButton />
         </div>
+        {onComment.includes(2) && 
+          <CommentSection postId={2} onComment={onComment} />
+        }
       </div>
       <div key={3} className="post-card">
         <div className="post-header">
@@ -285,10 +306,17 @@ function PostCard(){
         </div>
         <div className="post-card_interaction">
           <LikeButton />
-          <CommentButton />
+          <CommentButton 
+            postId={3}
+            onComment={onComment}
+            setOnComment={setOnComment}
+          />
           <BookmarkButton />
           <ShareButton />
         </div>
+        {onComment.includes(3) && 
+          <CommentSection postId={3} onComment={onComment} />
+        }
       </div>
     </>
   )

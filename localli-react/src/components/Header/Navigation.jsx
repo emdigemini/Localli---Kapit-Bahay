@@ -7,7 +7,7 @@ export function Navigation({ setConfirmLogout }){
   const [ toggleCommunity, setToggleCommunity ] = useState(false);
   const [ toggleMessage, setToggleMessage ] = useState(false);
   const [ toggleNotif, setToggleNotif ] = useState(false);
-  const [ toggleBookmark, setToggleBookmark ] = useState(false);
+  const [ toggleProfile, setToggleProfile ] = useState(false);
   const home = useRef(null);
   const notifRef = useRef(null);
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ export function Navigation({ setConfirmLogout }){
     setToggleHome(path === "/home");
     setToggleCommunity(path === "/community");
     setToggleMessage(path === "/messages");
+    setToggleProfile(path === "/profile");
   }, [location])
 
   const toggleEvent = (e) => {
@@ -26,7 +27,7 @@ export function Navigation({ setConfirmLogout }){
       case 'community': { navigate("/community"); break; }
       case 'message':{ navigate("/messages"); break; }
       case 'notification': { setToggleNotif(!toggleNotif); break; }
-      case 'bookmark': { setToggleBookmark(!toggleBookmark); break; }
+      case 'profile': { navigate("/profile"); break; }
       case 'logout': { setConfirmLogout(true); break; }
       default: { navigate("/home"); break; }
     }
@@ -52,9 +53,9 @@ export function Navigation({ setConfirmLogout }){
           onClick={(e) => toggleEvent(e)}
           style={toggleNotif ? { color: "#4993fb" } : {}}
         ><Notification /></li>
-        <li id="bookmark" 
+        <li id="profile" 
           onClick={(e) => toggleEvent(e)}
-        ><Bookmark /></li>
+        ><Profile toggleProfile={toggleProfile} /></li>
         <li id="logout" 
           onClick={(e) => toggleEvent(e)}
         ><Logout /></li>
@@ -107,25 +108,31 @@ function Community(){
 
 function Message(){
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2m-2 12H6v-2h12zm0-3H6V9h12zm0-3H6V6h12z" />
-    </svg>
+    <div className="message">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2m-2 12H6v-2h12zm0-3H6V9h12zm0-3H6V6h12z" />
+      </svg>
+    </div>
+
   )
 }
 
 function Notification(){
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M23 4.5C23 6.43 21.43 8 19.5 8S16 6.43 16 4.5S17.57 1 19.5 1S23 2.57 23 4.5M19.5 10A5.51 5.51 0 0 1 14 4.5c0-.5.08-1 .21-1.5H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14c1.11 0 2-.89 2-2V9.79c-.5.13-1 .21-1.5.21" />
-    </svg>
+    <div className="notification">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M23 4.5C23 6.43 21.43 8 19.5 8S16 6.43 16 4.5S17.57 1 19.5 1S23 2.57 23 4.5M19.5 10A5.51 5.51 0 0 1 14 4.5c0-.5.08-1 .21-1.5H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14c1.11 0 2-.89 2-2V9.79c-.5.13-1 .21-1.5.21" />
+      </svg>
+    </div>
+
   )
 }
 
-function Bookmark(){
+function Profile({ toggleProfile }){
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 14 14">
-      <path fill="currentColor" d="M4 0a1.5 1.5 0 0 0-1.5 1.5v12a.5.5 0 0 0 .854.354L7 10.207l3.646 3.647a.5.5 0 0 0 .854-.354v-12A1.5 1.5 0 0 0 10 0z" />
-    </svg>
+    <div className="profile"
+      style={toggleProfile ? { background: "#4993fb" } : {}}
+    ></div>
   )
 }
 

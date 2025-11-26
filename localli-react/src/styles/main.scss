@@ -1,6 +1,7 @@
 @import url('./_header.scss');
 @import url('./_loginPage.scss');
 @import url('./_messagePage.scss');
+@import url('./_profilePage.scss');
 @import url('./_communityPage.scss');
 @import url('./_fyp.scss');
 @import url('./_profileCard.scss');
@@ -15,6 +16,7 @@
   --primary-black: #191716;
   --secondary-black: #444444;
   --primary-blue: #4993fb;
+  --secondary-blue: #71A9F7;
   --fade-blue: #71A9F7;
 
   --subtext-black: #272727; 
@@ -27,7 +29,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 
 body {
   font-family: Inter, "sans-serif";
