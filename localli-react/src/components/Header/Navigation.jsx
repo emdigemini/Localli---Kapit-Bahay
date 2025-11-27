@@ -1,24 +1,33 @@
 import { NotificationList } from "./NotificationList"
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router";
+import { CheckLogin } from "../../context/LoginContext";
+import { LoadingData } from "../../context/LoadingContext";
 
 export function Navigation({ setConfirmLogout }){
+  const { setIsLoading } = useContext(LoadingData);
+
   const [ toggleHome, setToggleHome ] = useState(false);
   const [ toggleCommunity, setToggleCommunity ] = useState(false);
   const [ toggleMessage, setToggleMessage ] = useState(false);
   const [ toggleNotif, setToggleNotif ] = useState(false);
   const [ toggleProfile, setToggleProfile ] = useState(false);
+
   const home = useRef(null);
   const notifRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
+    setIsLoading(true);
     const path = location.pathname;
-    setToggleHome(path === "/home");
+    setToggleHome(path === "/");
     setToggleCommunity(path === "/community");
     setToggleMessage(path === "/messages");
     setToggleProfile(path === "/profile");
+
+    const setLoading = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(setLoading);
   }, [location])
 
   const toggleEvent = (e) => {
@@ -29,7 +38,7 @@ export function Navigation({ setConfirmLogout }){
       case 'notification': { setToggleNotif(!toggleNotif); break; }
       case 'profile': { navigate("/profile"); break; }
       case 'logout': { setConfirmLogout(true); break; }
-      default: { navigate("/home"); break; }
+      default: { navigate("/"); break; }
     }
   }
 
@@ -67,6 +76,7 @@ export function Navigation({ setConfirmLogout }){
 }
 
 export function LogoutConfirmation({ setConfirmLogout }){
+  const { setIsLogin } = useContext(CheckLogin);
   const navigate = useNavigate();
   const logoutConfirm = useRef(null);
 
@@ -76,6 +86,11 @@ export function LogoutConfirmation({ setConfirmLogout }){
     } else return;
   }
 
+  function logout(){
+    setIsLogin(false); 
+    navigate("/");
+  }
+
   return (
     <>
       <div onClick={confirmBoxHandler} className="logout-confirm-box">
@@ -83,7 +98,7 @@ export function LogoutConfirmation({ setConfirmLogout }){
           <i onClick={() => setConfirmLogout(false)}
            className="bi bi-x"></i>
           <p>Are you sure you want to log out?</p>
-          <button onClick={() => navigate("/")}>Confirm</button>
+          <button onClick={logout}>Confirm</button>
         </div>
       </div>
     </>
@@ -139,10 +154,12 @@ function Profile({ toggleProfile }){
 function Logout(){
   return (
     <div className="log-out">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h6q.425 0 .713.288T12 4t-.288.713T11 5H5v14h6q.425 0 .713.288T12 20t-.288.713T11 21zm12.175-8H10q-.425 0-.712-.288T9 12t.288-.712T10 11h7.175L15.3 9.125q-.275-.275-.275-.675t.275-.7t.7-.313t.725.288L20.3 11.3q.3.3.3.7t-.3.7l-3.575 3.575q-.3.3-.712.288t-.713-.313q-.275-.3-.262-.712t.287-.688z" />
-      </svg>
-      LOG OUT
+      <div className="logout">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h6q.425 0 .713.288T12 4t-.288.713T11 5H5v14h6q.425 0 .713.288T12 20t-.288.713T11 21zm12.175-8H10q-.425 0-.712-.288T9 12t.288-.712T10 11h7.175L15.3 9.125q-.275-.275-.275-.675t.275-.7t.7-.313t.725.288L20.3 11.3q.3.3.3.7t-.3.7l-3.575 3.575q-.3.3-.712.288t-.713-.313q-.275-.3-.262-.712t.287-.688z" />
+        </svg>
+        <p className="logout-text">LOG OUT</p>
+      </div>
     </div>
   )
 }

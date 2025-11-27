@@ -1,15 +1,27 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { CreatePost, PostRender, SelectedMedia } from "../../context/PostContext";
+import { LoadingPostCard, LoadingPostBox } from "./LoadingCard";
+import { LoadingData } from "../../context/LoadingContext";
 
 import DOMPurify from "dompurify";
 import parser from "html-react-parser";
 
 export function PostFeed(){
+  const { isLoading } = useContext(LoadingData);
+
   return (
     <>
       <div className="main-feed">
-        <PostBox />
-        <PostCard />
+        {isLoading
+        ? <> 
+            <LoadingPostBox />
+            <LoadingPostCard cards={5} />
+          </>
+        : <>
+            <PostBox />
+            <PostCard />
+          </>
+        }
       </div>
     </>
   )

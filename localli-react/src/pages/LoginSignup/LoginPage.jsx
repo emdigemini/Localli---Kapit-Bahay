@@ -1,6 +1,7 @@
 import AOS from "aos";
 import { useNavigate } from "react-router";
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
+import { CheckLogin } from "../../context/LoginContext";
 
 export function LoginPage(){
   const [ switched, setSwitched ] = useState(false);
@@ -42,7 +43,7 @@ export function LoginPage(){
           }
         </div>
       </div>
-      {demoMode && <DemoMessageState navigate={navigate} setDemoMode={setDemoMode} />}
+      {demoMode && <DemoMessageState setDemoMode={setDemoMode} />}
     </>
   )
 }
@@ -193,9 +194,11 @@ function LoginHeader_Tutors({ setDemoMode }){
   )
 }
 
-function DemoMessageState({ navigate, setDemoMode }){
+function DemoMessageState({ setDemoMode }){
+  const { setIsLogin } = useContext(CheckLogin);
+
   const nav = () => {
-    navigate("/home");
+    setIsLogin(true);
     setDemoMode(false);
   }
 

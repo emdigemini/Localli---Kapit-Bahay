@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import {  BrowserRouter as Router } from 'react-router-dom'
 import './styles/main.scss'
 import App from './App.jsx'
+import { CheckLoginProvider } from './context/LoginContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Router>
-      <App />
+      <CheckLoginProvider>
+        <App />
+      </CheckLoginProvider>
     </Router>
   </StrictMode>,
 )

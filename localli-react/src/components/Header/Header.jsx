@@ -1,13 +1,17 @@
 import { Outlet } from "react-router-dom"
 import { Navigation } from "./Navigation"
 import { CreatePost } from "../../context/PostContext"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { CreatePostUtility } from "../Home/PostFeed"
 import { LogoutConfirmation } from "./Navigation"
 
 export function Header(){
   const { createPost } = useContext(CreatePost);
   const [ confirmLogout, setConfirmLogout ] = useState(false);
+
+  useEffect(() => {
+
+  }, [])
 
   return (
     <>
