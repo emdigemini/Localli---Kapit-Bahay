@@ -1,19 +1,19 @@
 import AOS from "aos";
-import { useNavigate } from "react-router";
 import { useState, useEffect, useRef, useContext } from 'react'
 import { CheckLogin } from "../../context/LoginContext";
+import { RegisterAccount } from "../../components/Register/RegisterAccount";
 
 export function LoginPage(){
+  const [ role, setRole ] = useState("");
+  const [ toggleRegister, setToggleRegister ] = useState(false);
   const [ switched, setSwitched ] = useState(false);
   const [ wasSwitched, setWasSwitched ] = useState(false);
   const [ demoMode, setDemoMode ] = useState(false);
   const orangeBox = useRef({});
-  const navigate = useNavigate();
 
   function switchPage(){
     setWasSwitched(switched);
     setSwitched(!switched);
-    console.log(orangeBox.current.className);
   }
 
   useEffect(() => {
@@ -38,11 +38,15 @@ export function LoginPage(){
           : wasSwitched ? 'unswitch' : ''}`
           }>
           {switched 
-          ? <LoginHeader_Students setDemoMode={setDemoMode} />
-          : <LoginHeader_Tutors setDemoMode={setDemoMode} />
+          ? <LoginStudents setDemoMode={setDemoMode} setToggleRegister={setToggleRegister} 
+          setRole={setRole} />
+          : <LoginTutors setDemoMode={setDemoMode} setToggleRegister={setToggleRegister} 
+          setRole={setRole} />
           }
         </div>
       </div>
+      {toggleRegister && <RegisterAccount setToggleRegister={setToggleRegister}
+      role={role} />}
       {demoMode && <DemoMessageState setDemoMode={setDemoMode} />}
     </>
   )
@@ -84,7 +88,7 @@ function OrangeBox_Tutors(){
   )
 }
 
-function LoginHeader_Students({ setDemoMode }){
+function LoginStudents({ setDemoMode, setToggleRegister, setRole }){
   const [value1, setValue1] = useState("");
   const [password, setPassword] = useState("");
   const [ showPassword, setShowPassword ] = useState(false);
@@ -92,6 +96,10 @@ function LoginHeader_Students({ setDemoMode }){
   const showPass = () => {
     setShowPassword(!showPassword);
   }
+
+  useEffect(() => {
+    setRole("student");
+  }, [])
 
   return (
     <>
@@ -130,7 +138,8 @@ function LoginHeader_Students({ setDemoMode }){
           <button className='login-btn' 
             onClick={() => setDemoMode(true)}
           >DEMO VERSION</button>
-          <button className='signup-btn'>CREATE ACCOUNT</button>
+          <button className='signup-btn'
+            onClick={() => setToggleRegister(true)}>REGISTER</button>
         </div>
       </div>
 
@@ -139,7 +148,7 @@ function LoginHeader_Students({ setDemoMode }){
   )
 }
 
-function LoginHeader_Tutors({ setDemoMode }){
+function LoginTutors({ setDemoMode, setToggleRegister, setRole }){
   const [value1, setValue1] = useState("");
   const [password, setPassword] = useState("");
   const [ showPassword, setShowPassword ] = useState(false);
@@ -147,6 +156,10 @@ function LoginHeader_Tutors({ setDemoMode }){
   const showPass = () => {
     setShowPassword(!showPassword);
   }
+
+  useEffect(() => {
+    setRole("tutor");
+  }, [])
 
   return (
     <>
@@ -185,7 +198,8 @@ function LoginHeader_Tutors({ setDemoMode }){
           <button className='login-btn'
             onClick={() => setDemoMode(true)}
           >DEMO VERSION</button>
-          <button className='signup-btn'>CREATE ACCOUNT</button>
+          <button className='signup-btn'
+            onClick={() => setToggleRegister(true)}>REGISTER</button>
         </div>
       </div>
 

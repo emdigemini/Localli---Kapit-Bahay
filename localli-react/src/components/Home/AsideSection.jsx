@@ -1,6 +1,10 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useContext } from "react";
+import { LoadingData } from "../../context/LoadingContext";
+import { LoadingAsideSection } from "./LoadingCard";
 
 export function AsideSection(){
+  const { isLoading } = useContext(LoadingData);
+
   return (
     <aside className="sidebar">
       <SuggestUser />

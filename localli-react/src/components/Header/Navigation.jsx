@@ -19,15 +19,15 @@ export function Navigation({ setConfirmLogout }){
   const location = useLocation();
 
   useEffect(() => {
-    setIsLoading(true);
+    // setIsLoading(true);
     const path = location.pathname;
     setToggleHome(path === "/");
     setToggleCommunity(path === "/community");
     setToggleMessage(path === "/messages");
     setToggleProfile(path === "/profile");
 
-    const setLoading = setTimeout(() => setIsLoading(false), 1500);
-    return () => clearTimeout(setLoading);
+    // const setLoading = setTimeout(() => setIsLoading(false), 1500);
+    // return () => clearTimeout(setLoading);
   }, [location])
 
   const toggleEvent = (e) => {

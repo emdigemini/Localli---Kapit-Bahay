@@ -1,6 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { CreatePost, PostRender, SelectedMedia } from "../../context/PostContext";
-import { LoadingPostCard, LoadingPostBox } from "./LoadingCard";
 import { LoadingData } from "../../context/LoadingContext";
 
 import DOMPurify from "dompurify";
@@ -12,16 +11,8 @@ export function PostFeed(){
   return (
     <>
       <div className="main-feed">
-        {isLoading
-        ? <> 
-            <LoadingPostBox />
-            <LoadingPostCard cards={5} />
-          </>
-        : <>
-            <PostBox />
-            <PostCard />
-          </>
-        }
+        <PostBox />
+        <PostCard />
       </div>
     </>
   )

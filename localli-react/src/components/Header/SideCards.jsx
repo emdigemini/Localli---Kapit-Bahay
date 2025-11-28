@@ -1,5 +1,4 @@
 import { ProfileCard } from "./ProfileCard"
-import { LoadingProfileCard, LoadingSideFooter } from "../Home/LoadingCard"
 import { LoadingData } from "../../context/LoadingContext"
 import { useContext } from "react"
 
@@ -9,17 +8,8 @@ export function SideCards(){
   return (
     <div className="left-sticky-wrapper">
       <div className="left-side-cards">
-        {isLoading
-          ? <>
-              <LoadingProfileCard />
-              <LoadingSideFooter />
-            </>
-          : <>
-              <ProfileCard />
-              <SideFooter />
-            </>
-        }
-        
+          <ProfileCard />
+          <SideFooter />
       </div>
     </div>
   )
