@@ -159,23 +159,33 @@
     }
 
     .modal-card-posts {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 100%;
-      padding: 20px;
+      height: 100vh;
+      padding: 0 20px;
       border-radius: 20px;
       width: 100%;
-      backdrop-filter: blur(20px);
-      background: rgba(255, 255, 255, 0.7); 
+      background: #FFF; 
       box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      padding-bottom: 50px;
+      overflow-y: scroll;
+      scrollbar-width: thin;
 
       .buttons {
+        position: sticky;
+        top: 0;
         display: flex;
         align-self: flex-start;
         gap: 20px;
         margin-left: 20px;
-        padding: 20px;
+        margin-bottom: 5px;
+        padding: 30px 20px;
+        background: #FFF;
+        width: 100%;
+        z-index: 2;
 
         & button {
           padding: 10px 20px;
