@@ -9,7 +9,6 @@ export function LoginPage(){
   const [ switched, setSwitched ] = useState(false);
   const [ wasSwitched, setWasSwitched ] = useState(false);
   const [ demoMode, setDemoMode ] = useState(false);
-  const orangeBox = useRef({});
 
   function switchPage(){
     setWasSwitched(switched);
@@ -27,7 +26,7 @@ export function LoginPage(){
           `orange-box ${switched ? 'switch' 
           : wasSwitched ? 'unswitch' : ''}`
           }>
-          {switched
+          {!switched
           ? <OrangeBox_Students />
           : <OrangeBox_Tutors />
           }
@@ -37,7 +36,7 @@ export function LoginPage(){
           `login-box ${switched ? 'switch' 
           : wasSwitched ? 'unswitch' : ''}`
           }>
-          {switched 
+          {!switched 
           ? <LoginStudents setDemoMode={setDemoMode} setToggleRegister={setToggleRegister} 
           setRole={setRole} />
           : <LoginTutors setDemoMode={setDemoMode} setToggleRegister={setToggleRegister} 
@@ -108,7 +107,7 @@ function LoginStudents({ setDemoMode, setToggleRegister, setRole }){
         data-aos-duration="400"
       >
         <h1>LOOKING FOR A TUTOR?</h1>
-        <h2>Find trusted tutors in your community and start learning today.</h2>
+        <h2>Find trusted tutors in your community and start learning faster.</h2>
       </div>
 
       <div className="input-box" 

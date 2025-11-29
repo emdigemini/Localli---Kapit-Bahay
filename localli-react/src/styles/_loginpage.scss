@@ -10,7 +10,6 @@
   font-family: Inter, sans-serif;
   letter-spacing: 1px;
   background: var(--primary-white);
-  overflow: hidden;
 
   /* ORANGE BOX */
   .orange-box {
@@ -55,7 +54,7 @@
     }
 
     &:hover .orange-box_img img {
-      transform: scale(1.05);
+      transform: translateY(-12px) scale(1.05);
     }
   }
 
